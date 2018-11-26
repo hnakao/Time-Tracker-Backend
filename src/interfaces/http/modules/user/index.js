@@ -96,7 +96,7 @@ module.exports = () => {
   router
   .get('/:id', (req, res) => {
     getUseCase
-      .byId(req, res)
+      .byId(req.params.id, res)
       .then(data => {
         res.status(Status.OK).json(Success(data))
       })
@@ -106,7 +106,6 @@ module.exports = () => {
           Fail(error.message))
       })
   })
-
 /**
  * @swagger
  * /users:
