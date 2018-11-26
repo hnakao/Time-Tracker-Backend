@@ -1,14 +1,14 @@
  /**
-  * function for getter projects.
+  * function for getter roles.
   */
-module.exports = ({ projectRepository }) => {
+module.exports = ({ roleRepository }) => {
   const all = () => {
     return Promise
       .resolve()
       .then(() =>
-      projectRepository.getAll({
+      roleRepository.getAll({
         attributes: [
-          'id', 'projectName', 'description', 'estimatedDuration', 'currentSpentTime'
+          'id', 'rolName', 'workMode', 'basicSalary', 'extraHours', 'payExtraHours', 'description'
         ]
       })
       )

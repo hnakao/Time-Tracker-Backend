@@ -1,5 +1,5 @@
  /**
-  * function for getter projects.
+  * function for getter report.
   */
 module.exports = ({ projectRepository }) => {
   const all = () => {
@@ -8,7 +8,7 @@ module.exports = ({ projectRepository }) => {
       .then(() =>
       projectRepository.getAll({
         attributes: [
-          'id', 'projectName', 'description', 'estimatedDuration', 'currentSpentTime'
+          'id', 'time', 'description'
         ]
       })
       )

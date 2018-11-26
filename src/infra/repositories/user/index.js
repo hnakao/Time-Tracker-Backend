@@ -17,12 +17,20 @@ module.exports = (model) => {
     model.update(...args)
       .catch((error) => { throw new Error(error) })
 
-  const findById = (...args) =>
-    model.findById(...args)
-      .then(({ dataValues }) => toEntity(dataValues))
-      .catch((error) => { throw new Error(error) })
+  // const findById = (...args) =>
+  //   model.findById(...args)
+  //     .then(({ dataValues }) => toEntity(dataValues))
+  //     .catch((error) => { throw new Error(error) })
 
-  const findOne = (...args) =>
+  const findById = (id) => model.findById({ where: { id: id } }).then((entity) => {
+    if (!entity) {
+      throw new EntityNotFoundError()
+    }
+    const { dataValues } = entity
+    return toEntity(dataValues)
+  })
+
+   const findOne = (...args) =>
     model.findOne(...args)
       .then(({ dataValues }) => toEntity(dataValues))
       .catch((error) => { throw new Error(error) })

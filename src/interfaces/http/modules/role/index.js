@@ -1,68 +1,64 @@
 const { Router } = require('express')
 const Status = require('http-status')
 const container = require('src/container') // we have to get the DI
-const userRepository = require('src/infra/repositories/user')
-const { get, post, put, remove } = require('src/app/user')
-const { compose } = require('ramda')
+
+const {
+  createUseCase,
+  getAllUseCase,
+  removeUseCase,
+  updateUseCase
+} = require('src/app/role')
 
 module.exports = () => {
   const router = Router()
-  const { database, logger, auth, response: { Success, Fail } } = container.cradle
+  const { logger, auth, response: { Success, Fail } } = container.cradle
 
-  const userModel = database.models.users
-  const userUseCase = compose(
-    userRepository
-  )(userModel)
-
-  const getUseCase = get({ userRepository: userUseCase })
-  const postUseCase = post({ userRepository: userUseCase })
-  const putUseCase = put({ userRepository: userUseCase })
-  const deleteUseCase = remove({ userRepository: userUseCase })
-
-/**
+  /**
  * @swagger
  * definitions:
- *   user:
+ *   role:
  *     properties:
  *       id:
  *         type: string
  *         format: uuid
- *       firstName:
+ *       rolName:
  *         type: string
- *       lastName:
+ *       workMode:
  *         type: string
- *       email:
- *         type: string
- *       roleId:
- *         type: number
- *       isDeleted:
- *         type: number
+ *       basicSalary:
+ *          type: integer
+ *       extraHours:
+ *          type: integer
+ *       payExtraHours:
+ *          type: integer
+ *       description:
+ *          type: string
  */
 
   router.use(auth.authenticate())
 
-/**
- * @swagger
- * /users:
- *   get:
- *     tags:
- *       - Users
- *     description: Returns a list of users
- *     security:
- *       - JWT: []
- *     responses:
- *       200:
- *         description: An array of users
- *         schema:
- *           type: array
- *           items:
- *             $ref: '#/definitions/user'
- *       401:
- *        $ref: '#/responses/Unauthorized'
- */
+  /**
+  * @swagger
+  * /roles:
+  *   get:
+  *     tags:
+  *       - Roles
+  *     description: Returns a list of roles
+  *     security:
+  *       - JWT: []
+  *     responses:
+  *       200:
+  *         description: An array of roles
+  *         schema:
+  *           type: array
+  *           items:
+  *             $ref: '#/definitions/role'
+  *       401:
+  *        $ref: '#/responses/Unauthorized'
+  */
   router
     .get('/', (req, res) => {
-      getUseCase
+      getAllUseCase
         .all(req, res)
         .then(data => {
           res.status(Status.OK).json(Success(data))
@@ -74,63 +70,30 @@ module.exports = () => {
         })
     })
 
-/**
+  /**
  * @swagger
- * /users:
- *   getById:
- *     tags:
- *       - Users
- *     description: Returns an user
- *     security:
- *       - JWT: []
- *     responses:
- *       200:
- *         description: An user
- *         schema:
- *           type: Obj
- *           items:
- *             $ref: '#/definitions/user'
- *       401:
- *        $ref: '#/responses/Unauthorized'
- */
-  router
-  .get('/:id', (req, res) => {
-    getUseCase
-      .byId(req, res)
-      .then(data => {
-        res.status(Status.OK).json(Success(data))
-      })
-      .catch((error) => {
-        logger.error(error) // we still need to log every error for debugging
-        res.status(Status.BAD_REQUEST).json(
-          Fail(error.message))
-      })
-  })
-
-/**
- * @swagger
- * /users:
+ * /roles:
  *   post:
  *     tags:
- *       - Users
- *     description: Create new user
+ *       - Roles
+ *     description: Create new role
  *     security:
  *       - JWT: []
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: body
- *         description: User's Entity
+ *       - rolName: body
+ *         description: Role's Entity
  *         in: body
  *         required: true
  *         type: string
  *         schema:
- *           $ref: '#/definitions/user'
+ *           $ref: '#/definitions/shop'
  *     responses:
  *       200:
  *         description: Successfully Created
  *         schema:
- *           $ref: '#/definitions/user'
+ *           $ref: '#/definitions/role'
  *       401:
  *         $ref: '#/responses/Unauthorized'
  *       400:
@@ -138,7 +101,7 @@ module.exports = () => {
  */
   router
     .post('/', (req, res) => {
-      postUseCase
+      createUseCase
         .create({ body: req.body })
         .then(data => {
           res.status(Status.OK).json(Success(data))
@@ -149,35 +112,36 @@ module.exports = () => {
             Fail(error.message))
         })
     })
+
   /**
    * @swagger
-   * /users:
+   * /roles/id:
    *   put:
    *     tags:
-   *       - Users
-   *     description: Update User
+   *       - Roles
+   *     description: Update Role
    *     security:
    *       - JWT: []
    *     produces:
    *       - application/json
    *     parameters:
-   *       - name: id
+   *       - id: id
    *         in: path
    *         required: true
-   *         description: User's ID to update
+   *         description: Role's ID to update
    *         type: string
-   *       - name: body
-   *         description: User's Entity
+   *       - rolName: body
+   *         description: Role's Entity
    *         in: body
    *         required: true
    *         type: string
    *         schema:
-   *           $ref: '#/definitions/user'
+   *           $ref: '#/definitions/shop'
    *     responses:
    *       200:
    *         description: Successfully Updated
    *         schema:
-   *           $ref: '#/definitions/user'
+   *           $ref: '#/definitions/role'
    *       401:
    *         $ref: '#/responses/Unauthorized'
    *       400:
@@ -185,7 +149,7 @@ module.exports = () => {
    */
   router
     .put('/:id', (req, res) => {
-      putUseCase
+      updateUseCase
         .update({ id: req.params.id, body: req.body })
         .then(data => {
           res.status(Status.OK).json(Success(data))
@@ -196,35 +160,34 @@ module.exports = () => {
             Fail(error.message))
         })
     })
-
   /**
    * @swagger
-   * /users:
+   * /roles/id:
    *   delete:
    *     tags:
-   *       - Users
-   *     description: Delete User
+   *       - Roles
+   *     description: Delete Collection
    *     security:
    *       - JWT: []
    *     produces:
    *       - application/json
    *     parameters:
-   *       - name: id
+   *       - id: id
    *         in: path
    *         required: true
-   *         description: User's ID to delete
+   *         description: Role's ID to delete
    *         type: string
    *     responses:
    *       200:
    *         description: Successfully Deleted
    *         schema:
-   *           $ref: '#/definitions/user'
+   *           $ref: '#/definitions/role'
    *       401:
    *         $ref: '#/responses/Unauthorized'
    */
   router
     .delete('/:id', (req, res) => {
-      deleteUseCase
+      removeUseCase
         .remove({ id: req.params.id })
         .then(data => {
           res.status(Status.OK).json(Success(data))
@@ -235,5 +198,5 @@ module.exports = () => {
             Fail(error.message))
         })
     })
-  return router
-}
+  return router;
+};

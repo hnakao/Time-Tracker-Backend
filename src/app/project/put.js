@@ -1,22 +1,22 @@
 /**
- * this file will hold all the get use-case for user domain
+ * this file will hold all the get use-case for project domain
  */
-const { User } = require('src/domain/user')
+const { Project } = require('src/domain/project')
 
  /**
-  * function for getter user.
+  * function for update project.
   */
-module.exports = ({ userRepository }) => {
+module.exports = ({ projectRepository }) => {
   // code for getting all the items
   const update = ({ id, body }) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const user = User(body)
-        await userRepository.update(user, {
+        const project = Project(body)
+        await projectRepository.update(project, {
           where: { id }
         })
 
-        resolve(user)
+        resolve(project)
       } catch (error) {
         reject(error)
       }

@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     estimatedDuration: {
-      type: DataTypes.TIME
+      type: DataTypes.INTEGER
     },
     currentSpentTime: {
-      type: DataTypes.TIME
+      type: DataTypes.INTEGER
     },
   });
 

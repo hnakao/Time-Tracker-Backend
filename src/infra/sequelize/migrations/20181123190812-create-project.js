@@ -16,10 +16,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       estimatedDuration: {
-        type: Sequelize.TIME
+        type: Sequelize.INTEGER
       },
       currentSpentTime: {
-        type: Sequelize.TIME
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

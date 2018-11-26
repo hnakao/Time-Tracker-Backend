@@ -9,7 +9,7 @@ module.exports = ({ userRepository }) => {
       .then(() =>
       userRepository.getAll({
         attributes: [
-          'id', 'firstName', 'lastName', 'middleName', 'email', 'roleId', 'isDeleted', 'createdBy', 'updatedBy'
+          'id', 'firstName', 'lastName', 'email', 'roleId', 'isDeleted'
         ]
       })
       )
@@ -18,7 +18,19 @@ module.exports = ({ userRepository }) => {
       })
   }
 
+  const byId = (id) => {
+    return Promise
+      .resolve()
+      .then(() =>
+        userRepository.findById(id)
+      )
+      .catch(error => {
+        throw new Error(error)
+      })
+  }
+
   return {
-    all
+    all,
+    byId
   }
 }

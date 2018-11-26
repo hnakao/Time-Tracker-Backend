@@ -1,12 +1,12 @@
  /**
-  * function for remove project.
+  * function for remove report.
   */
-module.exports = ({ projectRepository }) => {
+module.exports = ({ reportRepository }) => {
   const remove = ({ id }) => {
     return Promise
       .resolve()
       .then(() =>
-        projectRepository.destroy({
+        reportRepository.destroy({
           where: { id }
         })
       )

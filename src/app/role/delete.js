@@ -1,12 +1,12 @@
  /**
-  * function for remove project.
+  * function for remove role.
   */
-module.exports = ({ projectRepository }) => {
+module.exports = ({ roleRepository }) => {
   const remove = ({ id }) => {
     return Promise
       .resolve()
       .then(() =>
-        projectRepository.destroy({
+        roleRepository.destroy({
           where: { id }
         })
       )
