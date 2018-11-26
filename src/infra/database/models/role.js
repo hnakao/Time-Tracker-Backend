@@ -28,7 +28,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING
-    },
+    }
+  },
+  {
+    underscored: false
   });
 
   Role.associate = function (models) {

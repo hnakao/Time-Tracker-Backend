@@ -1,11 +1,20 @@
-const get = require('./get')
-const post = require('./post')
-const put = require('./put')
-const remove = require('./delete')
+const repository = require('src/infra/repositories/project')
+const { Project } = require('src/domain/project')
+
+const attrs = ['id', 'projectName', 'description', 'estimatedDuration', 'currentSpentTime', 'createdAt', 'updatedAt']
+
+const {
+  getOneUseCase,
+  createUseCase,
+  getAllUseCase,
+  removeUseCase,
+  updateUseCase
+} = require('src/app/operations')(repository, Project, attrs)
 
 module.exports = {
-  get,
-  post,
-  put,
-  remove
+  getOneUseCase,
+  createUseCase,
+  getAllUseCase,
+  removeUseCase,
+  updateUseCase
 }

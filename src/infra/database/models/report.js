@@ -10,10 +10,12 @@ module.exports = (sequelize, DataTypes) => {
     time: {
       type: DataTypes.INTEGER
     },
-
     description: {
       type: DataTypes.STRING
-    },
+    }
+  },
+  {
+    underscored: false
   });
 
   Report.associate = function (models) {

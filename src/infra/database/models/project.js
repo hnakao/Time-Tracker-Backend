@@ -19,7 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     currentSpentTime: {
       type: DataTypes.INTEGER
-    },
+    }
+  },
+  {
+    underscored: false
   });
 
   Project.associate = function (models) {

@@ -7,7 +7,9 @@ const Project = t.struct({
   projectName: t.String,
   description: t.String,
   estimatedDuration: t.Integer,
-  currentSpentTime: t.Integer
+  currentSpentTime: t.Integer,
+  createdAt: t.maybe(t.Date),
+  updatedAt: t.maybe(t.Date)
 })
 
 module.exports = compose(

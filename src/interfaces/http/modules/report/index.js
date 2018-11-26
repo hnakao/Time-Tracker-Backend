@@ -61,7 +61,36 @@ module.exports = () => {
             Fail(error.message))
         })
     })
+/**
+   * @swagger
+   * /reports/id:
+   *   get:
+   *     tags:
+   *       - Reports
+   *     description: Returns one report
+   *     security:
+   *       - JWT: []
+   *     responses:
+   *       200:
+   *         description: A report in json format
+   *         schema:
+   *           $ref: '#/definitions/report'
+   *       401:
+   *        $ref: '#/responses/Unauthorized'
 
+   */
+  router
+    .get('/:id', (req, res) => {
+      getOneUseCase
+        .getOne(req.params.id)
+        .then(data => {
+          res.status(Status.OK).json(Success(data))
+        })
+        .catch((error) => {
+          logger.error(error) // we still need to log every error for debugging
+          Fail(error.message)
+        })
+    })
   /**
  * @swagger
  * /reports:

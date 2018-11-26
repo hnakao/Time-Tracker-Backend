@@ -9,7 +9,9 @@ const Role = t.struct({
   basicSalary: t.Integer,
   extraHours: t.Integer,
   payExtraHours: t.Integer,
-  description: t.String
+  description: t.String,
+  createdAt: t.maybe(t.Date),
+  updatedAt: t.maybe(t.Date)
 })
 
 module.exports = compose(

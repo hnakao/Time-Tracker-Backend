@@ -8,18 +8,18 @@ module.exports = (model, toEntity) => {
       })
     )
 
-  const create = (...args) =>
-    model.create(...args).then(({ dataValues }) => {
-      return toEntity(dataValues)
-    })
+  const create = (domain) =>
+    model.create(domain).then(({ dataValues }) => {
+    return toEntity(dataValues)
+  })
 
-  const update = (...args) =>
-    model.update(...args)
+  const update = (domain, id) =>
+    model.update(domain, { where: { id } })
 
-  const destroy = (...args) =>
-    model.destroy(...args)
+  const destroy = (id) =>
+    model.destroy({ where: { id } })
 
-  const findById = (id) => model.findOne({ where: { id: id } }).then((entity) => {
+  const findById = (id) => model.findById(id).then((entity) => {
     if (!entity) {
       throw new EntityNotFoundError()
     }
