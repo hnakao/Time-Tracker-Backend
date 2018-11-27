@@ -9,7 +9,7 @@ module.exports = ({ userRepository }) => {
       .then(() =>
       userRepository.getAll({
         attributes: [
-          'id', 'firstName', 'lastName', 'email', 'roleId', 'isDeleted'
+          'id', 'firstName', 'lastName', 'email', 'roleId'
         ]
       })
       )
