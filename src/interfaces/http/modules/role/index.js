@@ -6,7 +6,8 @@ const {
   createUseCase,
   getAllUseCase,
   removeUseCase,
-  updateUseCase
+  updateUseCase,
+  getOneUseCase
 } = require('src/app/role')
 
 module.exports = () => {
@@ -69,6 +70,36 @@ module.exports = () => {
             Fail(error.message))
         })
     })
+/**
+ * @swagger
+ * /roles/id:
+ *   get:
+ *     tags:
+ *       - Roles
+ *     description: Returns one role
+ *     security:
+ *       - JWT: []
+ *     responses:
+ *       200:
+ *         description: A role in json format
+ *         schema:
+ *           $ref: '#/definitions/role'
+ *       401:
+ *        $ref: '#/responses/Unauthorized'
+
+  */
+  router
+  .get('/:id', (req, res) => {
+    getOneUseCase
+      .getOne(req.params.id)
+      .then(data => {
+        res.status(Status.OK).json(Success(data))
+      })
+      .catch((error) => {
+        logger.error(error) // we still need to log every error for debugging
+        Fail(error.message)
+      })
+  })
 
   /**
  * @swagger

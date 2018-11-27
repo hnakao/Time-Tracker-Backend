@@ -1,11 +1,20 @@
-const get = require('./get')
-const post = require('./post')
-const put = require('./put')
-const remove = require('./delete')
+const repository = require('src/infra/repositories/role')
+const { Role } = require('src/domain/role')
+
+const attrs = ['id', 'rolName', 'workMode', 'basicSalary', 'extraHours', 'payExtraHours', 'description']
+
+const {
+  getOneUseCase,
+  createUseCase,
+  getAllUseCase,
+  removeUseCase,
+  updateUseCase
+} = require('src/app/operations')(repository, Role, attrs)
 
 module.exports = {
-  get,
-  post,
-  put,
-  remove
+  getOneUseCase,
+  createUseCase,
+  getAllUseCase,
+  removeUseCase,
+  updateUseCase
 }

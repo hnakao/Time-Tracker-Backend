@@ -6,7 +6,8 @@ const {
   createUseCase,
   getAllUseCase,
   updateUseCase,
-  removeUseCase
+  removeUseCase,
+  getOneUseCase
 } = require('src/app/report')
 
 module.exports = () => {
