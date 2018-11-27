@@ -6,8 +6,8 @@ const Project = t.struct({
   id: t.maybe(t.String),
   projectName: t.String,
   description: t.String,
-  estimatedDuration: t.Integer,
-  currentSpentTime: t.Integer,
+  estimatedDuration: t.Number,
+  currentSpentTime: t.Number,
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)
 })

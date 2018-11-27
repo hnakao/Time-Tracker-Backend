@@ -1,7 +1,7 @@
 const repository = require('src/infra/repositories/project')
 const { Project } = require('src/domain/project')
 
-const attrs = ['id', 'projectName', 'description', 'estimatedDuration', 'currentSpentTime', 'createdAt', 'updatedAt']
+const attrs = ['id', 'projectName', 'description', 'estimatedDuration', 'currentSpentTime']
 
 const {
   getOneUseCase,
