@@ -3,7 +3,7 @@ const Status = require('http-status')
 const container = require('src/container')
 
 const {
-  createUseCase,
+  createProjectUseCase,
   getAllUseCase,
   removeUseCase,
   updateUseCase,
@@ -128,8 +128,8 @@ module.exports = () => {
  */
   router
     .post('/', (req, res) => {
-      createUseCase
-        .create({ body: req.body })
+      createProjectUseCase
+        .createProject({ id: req.body.usersId, body: req.body })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })

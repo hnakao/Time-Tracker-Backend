@@ -40,7 +40,7 @@ module.exports = (Repository, Domain, attrs) => {
     return Promise
       .resolve()
       .then(() =>
-        Repository.getAll({ attrs })
+        Repository.getAll(attrs)
       )
       .catch(error => {
         throw new Error(error)
