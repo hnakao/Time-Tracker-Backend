@@ -11,29 +11,12 @@ const {
   destroy
 } = BaseRepository(model, Project)
 
-// const createProject = (id, projectDomain) => {
-//   model.findAll({
-//     where: { id: id}
-//   }).then(users => {
-//     return Project
-//       .create
-//   })
-//   const project = model.create(projectDomain)
-//   console.log("Users => " + JSON.stringify(users))
-//   project.addUsers(users)
-//   return Project(project)
-// }
-
 const createProject = async (id, projectDomain) => {
-  console.log("Users ids => " + id)
   const users = await userModel.findAll({
     where: { id: id}
   })
-  if (!users) {
-    throw new EntityNotFound()
-  }
+
   const project = await model.create(projectDomain)
-  console.log("Users => " + JSON.stringify(users))
   await project.addUsers(users)
   return Project(project)
 }

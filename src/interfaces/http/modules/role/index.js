@@ -22,7 +22,7 @@ module.exports = () => {
  *       id:
  *         type: string
  *         format: uuid
- *       rolName:
+ *       roleName:
  *         type: string
  *       workMode:
  *         type: string
@@ -113,7 +113,7 @@ module.exports = () => {
  *     produces:
  *       - application/json
  *     parameters:
- *       - rolName: body
+ *       - roleName: body
  *         description: Role's Entity
  *         in: body
  *         required: true
@@ -161,7 +161,7 @@ module.exports = () => {
    *         required: true
    *         description: Role's ID to update
    *         type: string
-   *       - rolName: body
+   *       - roleName: body
    *         description: Role's Entity
    *         in: body
    *         required: true

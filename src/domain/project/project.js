@@ -1,6 +1,6 @@
 const t = require('tcomb')
-const { compose } = require('ramda')
-const { cleanData } = require('../helper')
+const ProjectUsers = require('./project_users')
+const Entity = require('../entity')
 
 const Project = t.struct({
   id: t.maybe(t.String),
@@ -8,11 +8,10 @@ const Project = t.struct({
   description: t.String,
   estimatedDuration: t.Number,
   currentSpentTime: t.Number,
+  users: t.maybe(t.list(Entity.extend(ProjectUsers))),
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)
 })
 
-module.exports = compose(
-  cleanData,
-  Project
-)
+module.exports = Project
+

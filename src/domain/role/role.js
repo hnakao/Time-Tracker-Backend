@@ -4,7 +4,7 @@ const { cleanData } = require('../helper')
 
 const Role = t.struct({
   id: t.maybe(t.String),
-  rolName: t.String,
+  roleName: t.String,
   workMode: t.String,
   basicSalary: t.Number,
   extraHours: t.Number,

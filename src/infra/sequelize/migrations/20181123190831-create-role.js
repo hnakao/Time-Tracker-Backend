@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         allowNull: false
       },
-      rolName: {
+      roleName: {
         type: Sequelize.STRING,
         allowNull: false
       },

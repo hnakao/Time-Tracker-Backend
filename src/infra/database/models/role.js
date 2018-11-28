@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false
     },
-    rolName: {
+    roleName: {
       type: DataTypes.STRING,
       allowNull: false
     },

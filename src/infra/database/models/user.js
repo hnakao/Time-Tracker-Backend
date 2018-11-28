@@ -45,7 +45,7 @@ module.exports = function (sequelize, DataTypes) {
 
   User.associate = function (models) {
     // associations can be defined here
-    //User.hasMany(models.reports);
+    User.hasMany(models.reports);
 
     User.belongsToMany(models.projects, {
       through: 'userProject',
