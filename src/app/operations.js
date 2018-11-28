@@ -4,6 +4,8 @@ module.exports = (Repository, Domain, attrs) => {
       .resolve()
       .then(() => {
         const domain = Domain(body)
+        //console.log(Repository.Instance.prototype)
+        console.log(domain)
         return Repository.create(domain)
       })
       .catch(error => {
@@ -38,7 +40,7 @@ module.exports = (Repository, Domain, attrs) => {
     return Promise
       .resolve()
       .then(() =>
-        Repository.getAll()
+        Repository.getAll({ attrs })
       )
       .catch(error => {
         throw new Error(error)

@@ -15,14 +15,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     estimatedDuration: {
-      type: DataTypes.INTEGER
+      type: DataTypes.DOUBLE
     },
     currentSpentTime: {
-      type: DataTypes.INTEGER
+      type: DataTypes.DOUBLE
     }
   },
   {
-    underscored: false
+    underscored: false,
+    timestamps: false
   });
 
   Project.associate = function (models) {

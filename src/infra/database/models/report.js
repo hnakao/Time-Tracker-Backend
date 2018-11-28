@@ -8,14 +8,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     time: {
-      type: DataTypes.INTEGER
+      type: DataTypes.DOUBLE
     },
     description: {
       type: DataTypes.STRING
     }
   },
   {
-    underscored: false
+    underscored: false,
+    timestamps: false
   });
 
   Report.associate = function (models) {

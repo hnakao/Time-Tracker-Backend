@@ -1,7 +1,7 @@
 module.exports = (model, toEntity) => {
   this.model = model
-  const getAll = (...args) =>
-    model.findAll(...args).then((entity) =>
+  const getAll = (attrs) =>
+    model.findAll(attrs).then((entity) =>
       entity.map((data) => {
         const { dataValues } = data
         return toEntity(dataValues)

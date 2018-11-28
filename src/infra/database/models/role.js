@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     basicSalary: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       defaultValue: 0
     },
     extraHours: {
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     payExtraHours: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       defaultValue: 0
     },
     description: {
@@ -31,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
-    underscored: false
+    underscored: false,
+    timestamps: false
   });
 
   Role.associate = function (models) {

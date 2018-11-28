@@ -6,9 +6,9 @@ const Role = t.struct({
   id: t.maybe(t.String),
   rolName: t.String,
   workMode: t.String,
-  basicSalary: t.Integer,
-  extraHours: t.Integer,
-  payExtraHours: t.Integer,
+  basicSalary: t.Number,
+  extraHours: t.Number,
+  payExtraHours: t.Number,
   description: t.String,
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)

@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false
     }
-  }, {});
+  }, {
+    underscored: false,
+    timestamps: false
+  });
   userProject.associate = function(models) {
     // associations can be defined here
   };
