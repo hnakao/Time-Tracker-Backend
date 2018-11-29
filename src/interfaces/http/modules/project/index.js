@@ -176,7 +176,7 @@ module.exports = () => {
   router
     .put('/:id', (req, res) => {
       updateProjectUseCase
-        .updateProject({ id: req.params.id, body: req.body, users: req.body.usersId })
+        .updateProject({ id: req.params.id, body: req.body, users: req.body.users })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })

@@ -11,10 +11,11 @@ const {
   destroy
 } = BaseRepository(model, Project)
 
-const createProject = async (id, projectDomain) => {
-  const users = await userModel.findAll({ where: { id: id} })
+const createProject = async (users, projectDomain) => {
+  const mUsers = await userModel.findAll({ where: { id: users} })
+  console.log("HHHHH => " + JSON.stringify(projectDomain))
   const project = await model.create(projectDomain)
-  await project.addUsers(users)
+  await project.addUsers(mUsers)
   return Project(project)
 }
 
