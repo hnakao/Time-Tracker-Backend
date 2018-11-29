@@ -8,7 +8,8 @@ const Project = t.struct({
   description: t.String,
   estimatedDuration: t.Number,
   currentSpentTime: t.Number,
-  users: t.maybe(t.list(Entity.extend(ProjectUsers))),
+  //users: t.maybe(t.list(Entity.extend(ProjectUsers))),
+  users: t.maybe(t.list(Entity)),
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)
 })

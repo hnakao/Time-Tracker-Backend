@@ -6,7 +6,7 @@ const {
   createProjectUseCase,
   getAllUseCase,
   removeUseCase,
-  updateUseCase,
+  updateProjectUseCase,
   getOneUseCase
 } = require('src/app/project')
 
@@ -175,8 +175,8 @@ module.exports = () => {
    */
   router
     .put('/:id', (req, res) => {
-      updateUseCase
-        .update({ id: req.params.id, body: req.body })
+      updateProjectUseCase
+        .updateProject({ id: req.params.id, body: req.body, users: req.body.usersId })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })

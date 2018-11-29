@@ -17,10 +17,8 @@ module.exports = (model) => {
     model.update(...args)
       .catch((error) => { throw new Error(error) })
 
-   const findById = (id) => model.findById(id).then((entity) => {
-    if (!entity) {
-      throw new EntityNotFoundError()
-    }
+   const findById = (id) => model.findById(id)
+    .then((entity) => {
     const { dataValues } = entity
     return toEntity(dataValues)
   })

@@ -24,21 +24,21 @@ module.exports = {
       },
       userId: {
         type: Sequelize.UUID,
-        onDelete: 'CASCADE',
-        allowNull: false,
         references: {
           model: 'Users',
           key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       projectId: {
         type: Sequelize.UUID,
-        onDelete: 'CASCADE',
-        allowNull: false,
         references: {
           model: 'Projects',
           key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       }
     });
   },

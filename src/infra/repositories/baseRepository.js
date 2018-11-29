@@ -1,7 +1,7 @@
 module.exports = (model, toEntity) => {
   this.model = model
   const getAll = (attrs) =>
-    model.findAll(attrs).then((entity) =>
+    model.findAll({ attrs }).then((entity) =>
       entity.map((data) => {
         const { dataValues } = data
         return toEntity(dataValues)
@@ -19,10 +19,8 @@ module.exports = (model, toEntity) => {
   const destroy = (id) =>
     model.destroy({ where: { id } })
 
-  const findById = (id) => model.findById(id).then((entity) => {
-    if (!entity) {
-      throw new EntityNotFoundError()
-    }
+  const findById = (id) => model.findById(id)
+    .then((entity) => {
     const { dataValues } = entity
     return toEntity(dataValues)
   })

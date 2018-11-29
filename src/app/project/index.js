@@ -6,16 +6,18 @@ const attrs = ['id', 'projectName', 'description', 'estimatedDuration', 'current
 const {
   getOneUseCase,
   getAllUseCase,
-  removeUseCase,
-  updateUseCase
+  removeUseCase
+  //updateUseCase
 } = require('src/app/operations')(repository, Project, attrs)
 
 const createProjectUseCase = require('./post')
+const updateProjectUseCase = require('./put')
 
 module.exports = {
   getOneUseCase,
   createProjectUseCase,
   getAllUseCase,
   removeUseCase,
-  updateUseCase
+  updateProjectUseCase
+  //updateUseCase
 }

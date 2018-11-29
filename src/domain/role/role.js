@@ -1,6 +1,4 @@
 const t = require('tcomb')
-const { compose } = require('ramda')
-const { cleanData } = require('../helper')
 
 const Role = t.struct({
   id: t.maybe(t.String),
@@ -14,7 +12,4 @@ const Role = t.struct({
   updatedAt: t.maybe(t.Date)
 })
 
-module.exports = compose(
-  cleanData,
-  Role
-)
+module.exports = Role
