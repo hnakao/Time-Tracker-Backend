@@ -13,7 +13,6 @@ const {
 
 const createProject = async (users, projectDomain) => {
   const mUsers = await userModel.findAll({ where: { id: users} })
-  console.log("HHHHH => " + JSON.stringify(projectDomain))
   const project = await model.create(projectDomain)
   await project.addUsers(mUsers)
   return Project(project)
