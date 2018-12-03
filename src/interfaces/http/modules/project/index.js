@@ -129,7 +129,7 @@ module.exports = () => {
   router
     .post('/', (req, res) => {
       createProjectUseCase
-        .createProject({ id: req.body.usersId, body: req.body })
+        .createProject({ id: req.body.users, body: req.body })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })

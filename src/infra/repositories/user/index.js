@@ -1,17 +1,24 @@
 const { toEntity } = require('./transform')
 const { comparePassword } = require('../../encryption')
-const container = require('src/container')
-const { database } = container.cradle
+
+const { GetUser } = require('src/domain/user')
+// const container = require('src/container')
+// const { database } = container.cradle
+// const userModel = database.models.users
+
 
 module.exports = (model) => {
 
+  const container = require('src/container')
+  const { database } = container.cradle
+
   const getAll = () =>
     model.findAll({
-     // include: [{ model: database.models.roles, as: 'rol' }],
+      include: [{ model: database.models.roles, as: 'userRole' }],
     }).then((entity) =>
       entity.map((data) => {
         const { dataValues } = data
-        return toEntity(dataValues)
+        return GetUser(dataValues)
       })
     )
 
@@ -22,10 +29,13 @@ module.exports = (model) => {
     model.update(...args)
       .catch((error) => { throw new Error(error) })
 
-   const findById = (id) => model.findById(id)
+   const findById = (id) =>
+    model.findById(id, {
+      include: [{ model: database.models.roles, as: 'userRole' }],
+    })
     .then((entity) => {
     const { dataValues } = entity
-    return toEntity(dataValues)
+    return GetUser(dataValues)
   })
 
    const findOne = (...args) =>
