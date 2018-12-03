@@ -1,5 +1,7 @@
 const { toEntity } = require('./transform')
 const { comparePassword } = require('../../encryption')
+const container = require('src/container')
+const { database } = container.cradle
 
 const { GetUser } = require('src/domain/user')
 // const container = require('src/container')
