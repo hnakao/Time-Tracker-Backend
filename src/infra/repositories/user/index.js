@@ -1,13 +1,6 @@
 const { toEntity } = require('./transform')
 const { comparePassword } = require('../../encryption')
-const container = require('src/container')
-const { database } = container.cradle
-
 const { GetUser } = require('src/domain/user')
-// const container = require('src/container')
-// const { database } = container.cradle
-// const userModel = database.models.users
-
 
 module.exports = (model) => {
 
@@ -41,9 +34,11 @@ module.exports = (model) => {
   })
 
    const findOne = (...args) =>
-    model.findOne(...args)
-      .then(({ dataValues }) => toEntity(dataValues))
-      .catch((error) => { throw new Error(error) })
+    model.findOne(...args, {
+      include: [{ model: database.models.roles, as: 'userRole' }],
+    })
+    .then(({ dataValues }) => GetUser(dataValues))
+    .catch((error) => { throw new Error(error) })
 
   const validatePassword = (endcodedPassword) => (password) =>
     comparePassword(password, endcodedPassword)

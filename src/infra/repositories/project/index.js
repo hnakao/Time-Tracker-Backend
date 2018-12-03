@@ -4,6 +4,7 @@ const container = require('src/container')
 const { database } = container.cradle
 const model = database.models.projects
 const userModel = database.models.users
+const Sequelize = require('sequelize');
 
 const {
   destroy
@@ -26,7 +27,17 @@ const updateProject = async (id, projectDomain, users) => {
 
 const getAll = () =>
   model.findAll({
-    include: [{ model: database.models.users, as: 'users' }],
+    include: [
+      {
+        model: database.models.users,
+        as: 'users'
+      }
+      // {
+      //   model: database.models.reports,
+      //   attributes: []
+      // }
+    ],
+    //attributes: [[Sequelize.fn('SUM', Sequelize.col('reports.time')), 'currentSpentTime']]
   })
   .then((entities) =>
     entities.map((data) => {
