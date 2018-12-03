@@ -1,7 +1,7 @@
 const repository = require('src/infra/repositories/report')
 const { Report } = require('src/domain/report')
 
-const attrs = ['id', 'time', 'description', 'userId', 'projectId']
+const attrs = ['id', 'time', 'description', 'userId', 'projectId', 'createdAt', 'updatedAt']
 
 const {
   getOneUseCase,

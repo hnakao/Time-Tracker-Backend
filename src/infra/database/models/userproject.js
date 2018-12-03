@@ -16,8 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    underscored: false,
-    timestamps: false
+    underscored: false
   });
   userProject.associate = function(models) {
     // associations can be defined here

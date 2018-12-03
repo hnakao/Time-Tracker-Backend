@@ -22,8 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
-    underscored: false,
-    timestamps: false
+    underscored: false
   });
 
   Project.associate = function (models) {

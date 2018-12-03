@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
   {
-    underscored: false,
-    timestamps: false
+    underscored: false
   });
 
   Report.associate = function (models) {

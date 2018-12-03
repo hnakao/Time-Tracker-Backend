@@ -9,9 +9,7 @@ const Project = t.struct({
   estimatedDuration: t.Number,
   currentSpentTime: t.Number,
   //users: t.maybe(t.list(Entity.extend(ProjectUsers))),
-  users: t.maybe(t.list(Entity)),
-  createdAt: t.maybe(t.Date),
-  updatedAt: t.maybe(t.Date)
+  users: t.maybe(t.list(Entity))
 })
 
 module.exports = Project

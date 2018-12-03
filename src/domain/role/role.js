@@ -7,9 +7,7 @@ const Role = t.struct({
   basicSalary: t.Number,
   extraHours: t.Number,
   payExtraHours: t.Number,
-  description: t.String,
-  createdAt: t.maybe(t.Date),
-  updatedAt: t.maybe(t.Date)
+  description: t.String
 })
 
 module.exports = Role

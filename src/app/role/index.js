@@ -1,7 +1,7 @@
 const repository = require('src/infra/repositories/role')
 const { Role } = require('src/domain/role')
 
-const attrs = ['id', 'roleName', 'workMode', 'basicSalary', 'extraHours', 'payExtraHours', 'description']
+const attrs = ['id', 'roleName', 'workMode', 'basicSalary', 'extraHours', 'payExtraHours', 'description', 'createdAt', 'updatedAt']
 
 const {
   getOneUseCase,

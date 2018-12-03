@@ -5,9 +5,7 @@ const Report = t.struct({
   time: t.Integer,
   description: t.String,
   userId: t.maybe(t.String),
-  projectId: t.maybe(t.String),
-  createdAt: t.maybe(t.Date),
-  updatedAt: t.maybe(t.Date)
+  projectId: t.maybe(t.String)
 })
 
 module.exports = Report
