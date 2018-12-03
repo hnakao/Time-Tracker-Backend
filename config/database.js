@@ -11,14 +11,14 @@ module.exports = {
     'url': process.env.DATABASE_URL,
     'dialect': 'mysql',
     'define': {
-      'underscored': true
+      'underscored': false
     }
   },
   test: {
     'url': process.env.DATABASE_URL_TEST,
     'dialect': 'mysql',
     'define': {
-      'underscored': true
+      'underscored': false
     }
   },
   staging: {
