@@ -1,9 +1,14 @@
 const { toEntity } = require('./transform')
 const { comparePassword } = require('../../encryption')
+const container = require('src/container')
+const { database } = container.cradle
 
 module.exports = (model) => {
-  const getAll = (...args) =>
-    model.findAll(...args).then((entity) =>
+
+  const getAll = () =>
+    model.findAll({
+     // include: [{ model: database.models.roles, as: 'rol' }],
+    }).then((entity) =>
       entity.map((data) => {
         const { dataValues } = data
         return toEntity(dataValues)
