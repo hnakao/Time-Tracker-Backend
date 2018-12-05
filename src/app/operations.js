@@ -5,7 +5,7 @@ module.exports = (Repository, Domain, attrs) => {
       .then(() => {
         const domain = Domain(body)
         //console.log(Repository.Instance.prototype)
-        console.log(domain)
+        //console.log(domain)
         return Repository.create(domain)
       })
       .catch(error => {

@@ -4,7 +4,6 @@ const container = require('src/container')
 const { database } = container.cradle
 const model = database.models.projects
 const userModel = database.models.users
-const Sequelize = require('sequelize');
 
 const {
   destroy
@@ -21,7 +20,7 @@ const updateProject = async (id, projectDomain, users) => {
   const mUsers = await userModel.findAll({ where: { id: users} })
   const project = await model.findById(id)
   await project.update(projectDomain, { where: { id } })
-  await project.addUsers(mUsers)
+  await project.setUsers(mUsers)
   return Project(project)
 }
 

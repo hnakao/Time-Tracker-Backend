@@ -3,12 +3,31 @@ const BaseRepository = require('../baseRepository')
 const container = require('src/container')
 const { database } = container.cradle
 const model = database.models.reports
+const userModel = database.models.users
+const projectModel = database.models.projects
 
 const {
-  destroy,
-  create,
-  update,
+  destroy
 } = BaseRepository(model, Report)
+
+const create = async (domain) => {
+  const mUser = await userModel.findById(domain.users)
+  const mProject = await projectModel.findById(domain.projects)
+  const report = await model.create(domain)
+  await report.setUsers(mUser)
+  await report.setProjects(mProject)
+  return Report(report)
+}
+
+const update = async (domain, id) => {
+  const mUser = await userModel.findById(domain.users)
+  const mProject = await projectModel.findById(domain.projects)
+  const report = await model.findById(id)
+  await report.update(domain, { where: { id } })
+  await report.setUsers(mUser)
+  await report.setProjects(mProject)
+  return Report(report)
+}
 
 const getAll = () =>
   model.findAll({

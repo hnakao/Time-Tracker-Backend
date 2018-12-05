@@ -33,7 +33,7 @@ module.exports = () => {
  *         type: string
  *       email:
  *         type: string
- *       userRole:
+ *       roleId:
  *         type: string
  *       isDeleted:
  *         type: number
