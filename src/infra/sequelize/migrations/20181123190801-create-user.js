@@ -25,10 +25,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      roleId: {
-        type: Sequelize.UUID,
-        allowNull: false
-      },
       isDeleted: {
         type: Sequelize.INTEGER,
         defaultValue: 0
@@ -42,7 +38,16 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW')
-      }
+      },
+      roleId: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'roles',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
     })
   },
   down: function (queryInterface) {

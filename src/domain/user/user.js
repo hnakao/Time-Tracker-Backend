@@ -8,7 +8,7 @@ const User = t.struct({
   lastName: t.String,
   email: t.String,
   password: t.maybe(t.String),
-  roleId: t.maybe(t.String),
+  userRole: t.maybe(t.String),
   isDeleted: t.Number,
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)

@@ -25,10 +25,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
-    roleId: {
-      type: DataTypes.UUID,
-      allowNull: false
-    },
     isDeleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
@@ -45,7 +41,7 @@ module.exports = function (sequelize, DataTypes) {
 
   User.associate = function (models) {
     // associations can be defined here
-    //User.hasMany(models.reports);
+    User.hasMany(models.reports);
 
     User.belongsToMany(models.projects, {
       through: 'userProject',
@@ -53,7 +49,7 @@ module.exports = function (sequelize, DataTypes) {
       as: 'projects'
     });
 
-    User.belongsTo(models.roles, { as: 'userRole', foreignKey: 'roleId' });
+    User.belongsTo(models.roles, { foreignKey: 'roleId', as: 'userRole' });
   };
 
   return User;

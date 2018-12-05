@@ -6,6 +6,7 @@ module.exports = (model) => {
 
   const container = require('src/container')
   const { database } = container.cradle
+  const roleModel = database.models.roles
 
   const getAll = () =>
     model.findAll({
@@ -17,10 +18,37 @@ module.exports = (model) => {
       })
     )
 
-  const create = (...args) =>
-    model.create(...args).then(({ dataValues }) => toEntity(dataValues))
+    const create = async (...args) => {
+      const user = args[0]
+      const role = await roleModel.findOne({ where: { id: user.userRole} })
+      user.userRole = role.dataValues;
+      console.log(user)
+      userAdded = await model.create(user, {
+        include: [{
+          association: database.models.users.roles,
+        }],
+      })
+      return toEntity(userAdded)
+    }
 
-  const update = (...args) =>
+    // const create = (...args) =>
+    //   model.create(...args, {
+    //     include: [{
+
+    //     }]
+    //   })
+    // .then(({ dataValues }) => toEntity(dataValues))
+
+
+    // const updateProject = async (id, projectDomain, users) => {
+    //   const mUsers = await userModel.findAll({ where: { id: users} })
+    //   const project = await model.findById(id)
+    //   await project.update(projectDomain, { where: { id } })
+    //   await project.addUsers(mUsers)
+    //   return Project(project)
+    // }
+
+    const update = (...args) =>
     model.update(...args)
       .catch((error) => { throw new Error(error) })
 
