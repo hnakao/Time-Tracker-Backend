@@ -1,11 +1,13 @@
 module.exports = (Repository, Domain, attrs) => {
+  const moment = require('moment')
+
   const create = ({ body }) => {
     return Promise
       .resolve()
       .then(() => {
+        body.date = new Date(body.date)
         const domain = Domain(body)
-        //console.log(Repository.Instance.prototype)
-        //console.log(domain)
+
         return Repository.create(domain)
       })
       .catch(error => {
@@ -36,11 +38,11 @@ module.exports = (Repository, Domain, attrs) => {
     })
   }
 
-  const all = () => {
+  const all = (searchParams) => {
     return Promise
       .resolve()
       .then(() =>
-        Repository.getAll(attrs)
+        Repository.getAll(attrs, searchParams)
       )
       .catch(error => {
         throw new Error(error)

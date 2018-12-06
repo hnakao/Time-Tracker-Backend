@@ -7,6 +7,7 @@ const GetReport = t.struct({
   id: t.maybe(t.String),
   time: t.Integer,
   description: t.String,
+  date: t.Date,
   users: t.maybe(Entity.extend(UserEntity)),
   projects: t.maybe(Entity.extend(ProjectEntity))
 })

@@ -6,6 +6,9 @@ const model = database.models.reports
 const userModel = database.models.users
 const projectModel = database.models.projects
 
+const { toSequelizeSearch } = require('src/infra/support/sequelize_filter_attrs')
+const { SearchResult } = require('src/domain/search')
+
 const {
   destroy
 } = BaseRepository(model, Report)
@@ -29,25 +32,35 @@ const update = async (domain, id) => {
   return Report(report)
 }
 
-const getAll = () =>
+const getAll = (searchParams) => {
+  const attrs = toSequelizeSearch(selectFields, searchParams)
   model.findAll({
-    include: [
-      {
-        model: database.models.users,
-        as: 'users'
-      },
-      {
-        model: database.models.projects,
-        as: 'projects'
-      }
-    ],
-  })
-  .then((entities) =>
-    entities.map((data) => {
-      const { dataValues } = data
-      return GetReport(dataValues)
+      attrs,
+      include: [{
+          model: database.models.users,
+          as: 'users'
+        },
+        {
+          model: database.models.projects,
+          as: 'projects'
+        }
+      ],
     })
-  )
+    .then((entities) => {
+      const rows = entities.rows.map((data) => {
+        const { dataValues } = data
+        console.log(dataValues)
+        return GetReport(dataValues)
+      })
+      return SearchResult({ rows })
+      // entities.map((data) => {
+      //   const {
+      //     dataValues
+      //   } = data
+      //   return GetReport(dataValues)
+      // })
+    })
+}
 
   const findById = (id) =>
     model.findById(id, {
