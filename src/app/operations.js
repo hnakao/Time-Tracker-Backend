@@ -1,5 +1,4 @@
 module.exports = (Repository, Domain, attrs) => {
-  const moment = require('moment')
 
   const create = ({ body }) => {
     return Promise

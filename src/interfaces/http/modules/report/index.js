@@ -12,7 +12,7 @@ const {
 
 module.exports = () => {
   const router = Router()
-  const { logger, auth, response: { Success, Fail }, query: mapQuery } = container.cradle
+  const { logger, auth, response: { Success, Fail } } = container.cradle
 
   /**
  * @swagger

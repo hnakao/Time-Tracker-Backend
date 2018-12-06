@@ -6,9 +6,6 @@ const model = database.models.reports
 const userModel = database.models.users
 const projectModel = database.models.projects
 
-const { toSequelizeSearch } = require('src/infra/support/sequelize_filter_attrs')
-const { SearchResult } = require('src/domain/search')
-
 const {
   destroy
 } = BaseRepository(model, Report)
@@ -32,13 +29,8 @@ const update = async (domain, id) => {
   return Report(report)
 }
 
-const getAll = () => {
-  //const attrs = toSequelizeSearch(searchParams)
-  // const startDate = searchParams.startDate
-  // const endDate = searchParams.endDate
-
+const getAll = () =>
   model.findAll({
-
       include: [{
           model: database.models.users,
           as: 'users'
@@ -55,7 +47,7 @@ const getAll = () => {
         return GetReport(dataValues)
       })
     )
-}
+
 
   const findById = (id) =>
     model.findById(id, {
