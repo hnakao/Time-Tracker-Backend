@@ -33,7 +33,8 @@ const update = async (domain, id) => {
 }
 
 const getAll = (searchParams) => {
-  const attrs = toSequelizeSearch(selectFields, searchParams)
+  const attrs = toSequelizeSearch(searchParams)
+  console.log(attrs)
   model.findAll({
       attrs,
       include: [{

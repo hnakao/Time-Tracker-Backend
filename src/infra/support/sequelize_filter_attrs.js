@@ -1,4 +1,4 @@
-const toSequelizeSearch = (selectFields, searchParams) => {
+const toSequelizeSearch = (searchParams) => {
   const attrs = {
     attributes: selectFields
   }
