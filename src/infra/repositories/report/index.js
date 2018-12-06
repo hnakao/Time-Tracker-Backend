@@ -32,11 +32,13 @@ const update = async (domain, id) => {
   return Report(report)
 }
 
-const getAll = (searchParams) => {
-  const attrs = toSequelizeSearch(searchParams)
-  console.log(attrs)
+const getAll = () => {
+  //const attrs = toSequelizeSearch(searchParams)
+  // const startDate = searchParams.startDate
+  // const endDate = searchParams.endDate
+
   model.findAll({
-      attrs,
+
       include: [{
           model: database.models.users,
           as: 'users'
@@ -47,20 +49,12 @@ const getAll = (searchParams) => {
         }
       ],
     })
-    .then((entities) => {
-      const rows = entities.rows.map((data) => {
+    .then((entities) =>
+      entities.map((data) => {
         const { dataValues } = data
-        console.log(dataValues)
         return GetReport(dataValues)
       })
-      return SearchResult({ rows })
-      // entities.map((data) => {
-      //   const {
-      //     dataValues
-      //   } = data
-      //   return GetReport(dataValues)
-      // })
-    })
+    )
 }
 
   const findById = (id) =>

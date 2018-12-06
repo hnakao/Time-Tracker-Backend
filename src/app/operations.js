@@ -38,11 +38,11 @@ module.exports = (Repository, Domain, attrs) => {
     })
   }
 
-  const all = (searchParams) => {
+  const all = () => {
     return Promise
       .resolve()
       .then(() =>
-        Repository.getAll(attrs, searchParams)
+        Repository.getAll(attrs)
       )
       .catch(error => {
         throw new Error(error)

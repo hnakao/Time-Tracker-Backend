@@ -52,7 +52,7 @@ module.exports = () => {
   router
     .get('/', (req, res) => {
       getAllUseCase
-        .all(mapQuery(req.query))
+        .all(req, res)
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })
