@@ -10,7 +10,7 @@ const GetUser = t.struct({
   lastName: t.String,
   email: t.String,
   password: t.maybe(t.String),
-  userRole: t.maybe(Entity.extend(RoleEntity)),
+  roleId: t.maybe(Entity.extend(RoleEntity)),
   isDeleted: t.Number,
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)

@@ -28,11 +28,11 @@ module.exports = function (sequelize, DataTypes) {
     isDeleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
+    },
+    roleId: {
+      type: DataTypes.UUID,
+      allowNull: false
     }
-    // roleId: {
-    //   type: DataTypes.UUID,
-    //   allowNull: false
-    // }
   }, {
     hooks: {
       beforeCreate: user => {

@@ -15,15 +15,15 @@ module.exports = (model) => {
       })
     )
 
-    const create = async (domain) => {
-      const mRol = await roleModel.findById(domain.userRole)
-      const user = await model.create(domain)
-      await user.setRoles(mRol)
-      return toEntity(user)
-    }
+  // const create = async (domain) => {
+  //   const mRol = await roleModel.findById(domain.userRole)
+  //   const user = await model.create(domain)
+  //   await user.setRoles(mRol)
+  //   return toEntity(user)
+  // }
 
-  // const create = (...args) =>
-  //   model.create(...args).then(({ dataValues }) => toEntity(dataValues))
+  const create = (...args) =>
+  model.create(...args).then(({ dataValues }) => toEntity(dataValues))
 
   const update = (...args) =>
     model.update(...args)
