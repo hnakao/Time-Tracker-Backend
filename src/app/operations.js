@@ -28,6 +28,7 @@ module.exports = (Repository, Domain, attrs) => {
   const update = ({ id, body }) => {
     return new Promise(async (resolve, reject) => {
       try {
+        body.date = new Date(body.date)
         const domain = Domain(body)
         await Repository.update(domain, id)
         resolve(domain)
