@@ -1,27 +1,22 @@
-const repository = require('src/infra/repositories/report')
-const { Report } = require('src/domain/report')
+  module.exports = (Repository, User, attrs) => {
+    const all = ({ user }) => {
+      return Promise
+        .resolve()
+        .then(() => {
+          const mUser = User(user)
+          console.log("On App => " + JSON.stringify(user))
+          return Repository.getAll(attrs, mUser)
+        })
+        .catch(error => {
+          throw new Error(error)
+        })
+    }
 
-const all = () => {
-  return Promise
-    .resolve()
-    .then(() =>
-      Repository.getAll(attrs)
-    )
-    .catch(error => {
-      throw new Error(error)
-    })
-}
+    const getAllUseCase = {
+      all
+    }
 
-const createProject = ({ id, body }) => {
-  return Promise
-    .resolve()
-    .then(() => {
-      const domain = new Project(body)
-      return repository.createProject(id, domain)
-    })
-    .catch(error => {
-      throw new Error(error)
-    })
-}
-
-module.exports = { all }
+    return {
+      getAllUseCase
+    }
+  }
