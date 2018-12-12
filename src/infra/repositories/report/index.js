@@ -30,10 +30,27 @@ const update = async (domain, id) => {
   return Report(report)
 }
 
-const getAll = (attrs, user) =>
+const getAll = (attrs, user, filter) =>
   roleModel.findById(user.roleId).then(mRole => {
-    return (mRole.roleName !== "admin") ? { userId: user.id } : {}
-  }).then(roleWhere =>
+    options = {};
+    whereSearch
+    var mDate = new Date();
+    var firstDay = new Date(mDate.getFullYear(), mDate.getMonth(), 1);
+    var lastDay = new Date(mDate.getFullYear(), mDate.getMonth() + 1, 0);
+
+    if(filter && filter !== {}){
+      options.date = (filter.startDate && filter.endDate) ?
+                           {$between: [filter.startDate, filter.endDate]} :
+                           {$between: [firstDay, lastDay]}
+      options.projectId = filter.projectId ? filter.projectId : {}
+      options.userId = filter.userId ? filter.userId : {}
+    } else{
+      options.date = {$between: [firstDay, lastDay]}
+      options.userId = (mRole.roleName !== "admin") ? user.id : {}
+    }
+    options.assign({ where: options })
+    console.log("OPTIONS => " + JSON.stringify(options))
+  }).then(options =>
     model.findAll(
       {
         attributes: attrs,
@@ -46,12 +63,11 @@ const getAll = (attrs, user) =>
           model: database.models.projects,
           as: 'projects'
         }],
-        where: roleWhere
+        where: options
       }
     )).then(reports =>
       reports.map((data) => {
         const { dataValues } = data
-        console.log("On Repo => " + JSON.stringify(data))
         return GetReport(dataValues)
       })
     )

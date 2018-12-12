@@ -1,11 +1,10 @@
-  module.exports = (Repository, User, attrs) => {
-    const all = ({ user }) => {
+module.exports = (Repository, User, attrs) => {
+    const all = ({ user, filter }) => {
       return Promise
         .resolve()
         .then(() => {
           const mUser = User(user)
-          console.log("On App => " + JSON.stringify(user))
-          return Repository.getAll(attrs, mUser)
+          return Repository.getAll(attrs, mUser, filter)
         })
         .catch(error => {
           throw new Error(error)

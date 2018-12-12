@@ -52,9 +52,8 @@ module.exports = () => {
   router
     .get('/', (req, res) => {
       getAllUseCase
-        .all({ user: req.user })
+        .all({ user: req.user, filter: req.query })
         .then(data => {
-          console.log("On Model => " + data)
           res.status(Status.OK).json(Success(data))
         })
         .catch((error) => {
