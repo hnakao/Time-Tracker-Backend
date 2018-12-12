@@ -1,5 +1,5 @@
 module.exports = (Repository, User, attrs) => {
-    const all = ({ user, filter }) => {
+    const all = ({ user }, filter) => {
       return Promise
         .resolve()
         .then(() => {

@@ -12,7 +12,7 @@ const {
 
 module.exports = () => {
   const router = Router()
-  const { logger, auth, response: { Success, Fail } } = container.cradle
+  const { logger, auth, response: { Success, Fail }, query: mapQuery } = container.cradle
 
   /**
  * @swagger
@@ -52,7 +52,7 @@ module.exports = () => {
   router
     .get('/', (req, res) => {
       getAllUseCase
-        .all({ user: req.user, filter: req.query })
+        .all({ user: req.user }, mapQuery(req.query))
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })

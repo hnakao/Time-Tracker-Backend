@@ -6,6 +6,7 @@ const model = database.models.reports
 const userModel = database.models.users
 const projectModel = database.models.projects
 const roleModel = database.models.roles
+const { toSequelizeFilter } = require('src/infra/support/sequelize_filter_attrs')
 
 const {
   destroy
@@ -32,61 +33,44 @@ const update = async (domain, id) => {
 
 const getAll = (attrs, user, filter) =>
   roleModel.findById(user.roleId).then(mRole => {
-    options = {};
-    whereSearch
-    var mDate = new Date();
-    var firstDay = new Date(mDate.getFullYear(), mDate.getMonth(), 1);
-    var lastDay = new Date(mDate.getFullYear(), mDate.getMonth() + 1, 0);
-
-    if(filter && filter !== {}){
-      options.date = (filter.startDate && filter.endDate) ?
-                           {$between: [filter.startDate, filter.endDate]} :
-                           {$between: [firstDay, lastDay]}
-      options.projectId = filter.projectId ? filter.projectId : {}
-      options.userId = filter.userId ? filter.userId : {}
-    } else{
-      options.date = {$between: [firstDay, lastDay]}
-      options.userId = (mRole.roleName !== "admin") ? user.id : {}
-    }
-    options.assign({ where: options })
-    console.log("OPTIONS => " + JSON.stringify(options))
-  }).then(options =>
-    model.findAll(
-      {
-        attributes: attrs,
-        include: [
-        {
+    const filterOptions = {
+      attributes: attrs,
+      include: [ {
           model: database.models.users,
           as: 'users'
         },
         {
           model: database.models.projects,
           as: 'projects'
-        }],
-        where: options
-      }
-    )).then(reports =>
-      reports.map((data) => {
-        const { dataValues } = data
-        return GetReport(dataValues)
-      })
-    )
+        }]
+    }
 
-  const findById = (id) =>
-    model.findById(id, {
-      include: [
-        { model: database.models.users,
-          as: 'users'
-        },
-        { model: database.models.projects,
-          as: 'projects'
-        }
-      ],
-  })
-    .then((entity) => {
-    const { dataValues } = entity
-    return GetReport(dataValues)
-  })
+    Object.assign(filterOptions, toSequelizeFilter(filter, user, mRole))
+    return filterOptions
+  }).then(options =>
+      model.findAll(options)
+  ).then(reports =>
+    reports.map((data) => {
+      const { dataValues } = data
+      return GetReport(dataValues)
+    })
+  )
+
+const findById = (id) =>
+  model.findById(id, {
+    include: [
+      { model: database.models.users,
+        as: 'users'
+      },
+      { model: database.models.projects,
+        as: 'projects'
+      }
+    ],
+})
+  .then((entity) => {
+  const { dataValues } = entity
+  return GetReport(dataValues)
+})
 
 module.exports = {
   create,

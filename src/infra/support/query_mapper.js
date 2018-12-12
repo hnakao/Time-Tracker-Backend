@@ -1,21 +1,10 @@
-const { SearchParams } = require('src/domain/search')
+const { filterParams } = require('src/domain/filter')
 module.exports = () => {
   const mapQuery = (params) => {
-    const { limit, offset, ordering, ...filter } = params
-    const pagination = {
-      limit: (params.limit) ? parseInt(params.limit) : 1000000,
-      offset: (params.offset) ? parseInt(params.offset) : 0
-    }
-    const orderStr = params.ordering
-    let order = {}
-    if (orderStr) {
-      order = {
-        field: (orderStr.charAt(0) === '-') ? orderStr.substring(1) : orderStr,
-        type: (orderStr.charAt(0) === '-') ? 'DESC' : 'ASC'
-      }
-    }
-    const searchParams = SearchParams({ filter, pagination, order })
-    return searchParams
+    const { ...filter } = params
+
+    const mFilterParams = filterParams({ filter })
+    return mFilterParams
   }
   return mapQuery
 }
