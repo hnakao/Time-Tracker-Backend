@@ -3,7 +3,7 @@ const toSequelizeFilter = (filterParams, user, role) => {
   const mDate = new Date();
   const firstDay = new Date(mDate.getFullYear(), mDate.getMonth(), 1);
   const lastDay = new Date(mDate.getFullYear(), mDate.getMonth() + 1, 0);
-  const userOption = (role.roleName !== "admin") ? { userId: user.id } : {}
+  const userOption = (role.roleName !== "Admin") ? { userId: user.id } : {}
 
   if (!isEmpty(filterParams.filter)) {
     const mFilter = filterParams.filter
