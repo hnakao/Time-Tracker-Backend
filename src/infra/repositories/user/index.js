@@ -7,8 +7,8 @@ module.exports = (model) => {
   const roleModel = database.models.roles
   const userModel = database.models.users
 
-  const getAll = (...args) =>
-    model.findAll(...args).then((entity) =>
+  const getAll = () =>
+    model.findAll( { where: { isDeleted: 0 } }).then((entity) =>
       entity.map((data) => {
         const { dataValues } = data
         return toEntity(dataValues)
