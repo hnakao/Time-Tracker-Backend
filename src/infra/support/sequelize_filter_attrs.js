@@ -5,19 +5,18 @@ const toSequelizeFilter = (filterParams, user, role) => {
   var lastDay = new Date(mDate.getFullYear(), mDate.getMonth() + 1, 0);
 
   if (!isEmpty(filterParams.filter)) {
-    console.log(JSON.stringify(filterParams.filter))
     const mFilter = filterParams.filter
     const startDate = (mFilter.startDate) ? new Date(mFilter.startDate) : firstDay
     const endDate = (mFilter.endDate) ? new Date(mFilter.endDate): lastDay
 
+    const whereConditions = { date: { $between: [startDate, endDate] }}
+    Object.keys(mFilter).forEach(key => {
+      if(key !== "startDate" && key !== "endDate")
+        Object.assign(whereConditions, { [key]: mFilter[key]})
+    });
+
     Object.assign(attrs, {
-      where: {
-        date: {
-          $between: [startDate, endDate]
-        },
-        projectId: mFilter.projectId,
-        userId: mFilter.userId
-      }
+      where: whereConditions
     })
   } else{
     const userId = (role.roleName !== "admin") ? user.id : ""

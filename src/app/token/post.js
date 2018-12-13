@@ -4,6 +4,7 @@
 const Token = require('src/domain/token')
 const container = require('src/container')
 const { database } = container.cradle
+const roleModel = database.models.roles
 
  /**
   * function for getter user.
@@ -18,15 +19,13 @@ module.exports = ({ userRepository, webToken }) => {
           attributes: [
             'id', 'firstName', 'lastName', 'email', 'password', 'roleId', 'isDeleted'
           ],
-          include: [ {
-            model: database.models.roles,
-            as: 'userRole'
-          }],
           where: {
             email: credentials.email,
             isDeleted: 0
           }
         })
+
+        const role = await roleModel.findById(userCredentials.roleId)
 
         const validatePass = userRepository.validatePassword(userCredentials.password)
 
@@ -41,7 +40,7 @@ module.exports = ({ userRepository, webToken }) => {
             firstName: userCredentials.firstName,
             lastName: userCredentials.lastName,
             email: userCredentials.email,
-            rol: userCredentials.userRole
+            roleName: role.roleName
           })
         })
       } catch (error) {
