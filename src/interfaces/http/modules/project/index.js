@@ -5,6 +5,7 @@ const container = require('src/container')
 const {
   createProjectUseCase,
   getAllUseCase,
+  getAllByUserIdUseCase,
   removeUseCase,
   updateProjectUseCase,
   getOneUseCase
@@ -97,6 +98,37 @@ module.exports = () => {
           Fail(error.message)
         })
     })
+
+    /**
+   * @swagger
+   * /projects/users/id:
+   *   get:
+   *     tags:
+   *       - Projects by user Id
+   *     description: Returns all the projects that belong to a user
+   *     security:
+   *       - JWT: []
+   *     responses:
+   *       200:
+   *         description: Projects in json format
+   *         schema:
+   *           $ref: '#/definitions/project'
+   *       401:
+   *        $ref: '#/responses/Unauthorized'
+
+   */
+  router
+  .get('/users/:id', (req, res) => {
+    getAllByUserIdUseCase
+      .all(req.params.id)
+      .then(data => {
+        res.status(Status.OK).json(Success(data))
+      })
+      .catch((error) => {
+        logger.error(error) // we still need to log every error for debugging
+        Fail(error.message)
+      })
+  })
   /**
  * @swagger
  * /projects/:

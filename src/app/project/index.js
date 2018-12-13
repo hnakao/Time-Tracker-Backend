@@ -12,11 +12,13 @@ const {
 
 const createProjectUseCase = require('./post')
 const updateProjectUseCase = require('./put')
+const getAllByUserIdUseCase = require('./get')(repository)
 
 module.exports = {
   getOneUseCase,
   createProjectUseCase,
   getAllUseCase,
+  getAllByUserIdUseCase,
   removeUseCase,
   updateProjectUseCase
   //updateUseCase
