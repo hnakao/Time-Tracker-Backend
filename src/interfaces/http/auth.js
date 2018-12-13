@@ -20,7 +20,6 @@ module.exports = ({ config, database }) => {
     const userUseCase = compose(
       userRepository
     )(userModel)
-      console.log(payload);
     userUseCase.findById(payload.id)
       .then((user) => {
         done(null, user)
