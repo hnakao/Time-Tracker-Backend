@@ -8,14 +8,11 @@ const projectModel = database.models.projects
 const roleModel = database.models.roles
 const { toSequelizeFilter } = require('src/infra/support/sequelize_filter_attrs')
 
-const {
-  destroy
-} = BaseRepository(model, Report)
-
 const create = async (domain) => {
   const mUser = await userModel.findById(domain.users)
   const mProject = await projectModel.findById(domain.projects)
   const report = await model.create(domain)
+  await mProject.increment('currentSpentTime', {by: domain.time, where: {id: domain.projects}})
   await report.setUsers(mUser)
   await report.setProjects(mProject)
   return Report(report)
@@ -25,6 +22,8 @@ const update = async (domain, id) => {
   const mUser = await userModel.findById(domain.users)
   const mProject = await projectModel.findById(domain.projects)
   const report = await model.findById(id)
+  await mProject.decrement('currentSpentTime', {by: report.time, where: {id: domain.projects}})
+  await mProject.increment('currentSpentTime', {by: domain.time, where: {id: domain.projects}})
   await report.update(domain, { where: { id } })
   await report.setUsers(mUser)
   await report.setProjects(mProject)
@@ -71,6 +70,13 @@ const findById = (id) =>
   const { dataValues } = entity
   return GetReport(dataValues)
 })
+
+const destroy = async (id) => {
+  const report = await model.findById(id)
+  const mProject = await projectModel.findById(report.projectId)
+  await mProject.decrement('currentSpentTime', {by: report.time, where: {id: mProject.id}})
+  await model.destroy({ where: { id } })
+}
 
 module.exports = {
   create,

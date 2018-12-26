@@ -4,7 +4,6 @@ const container = require('src/container')
 const { database } = container.cradle
 const model = database.models.projects
 const userModel = database.models.users
-const reportModel = database.models.reports
 
 const {
   destroy
@@ -38,15 +37,6 @@ const getAll = () =>
       }
     ]
   }).then(result => {
-    for (var i = 0; i < result.length; i++) {
-      const mReports = result[i].reports
-      let totalTime = 0
-      for (var j = 0; j < mReports.length; j++) {
-        totalTime += mReports[j].time
-      }
-      result[i].currentSpentTime = totalTime
-    }
-
     return result.map((data) => {
       const { dataValues } = data
       return GetProject(dataValues)
