@@ -45,7 +45,14 @@ const getAll = () =>
 
   const getAllByUserId = (userId) =>
   userModel.findById(userId).then(user =>
-    user.getProjects().then(result => {
+    user.getProjects({
+      include: [
+        {
+          model: database.models.users,
+          as: 'users'
+        }
+      ]
+    }).then(result => {
       return result.map((data) => {
         const { dataValues } = data
         return GetProject(dataValues)
