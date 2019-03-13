@@ -5,76 +5,111 @@ const { database } = container.cradle
 const model = database.models.reports
 const userModel = database.models.users
 const projectModel = database.models.projects
-const roleModel = database.models.roles
+const taskModel = database.models.tasks
 const { toSequelizeFilter } = require('src/infra/support/sequelize_filter_attrs')
+const Sequelize = require('sequelize')
 
-const create = async (domain) => {
-  const mUser = await userModel.findById(domain.users)
-  const mProject = await projectModel.findById(domain.projects)
-  const report = await model.create(domain)
-  await mProject.increment('currentSpentTime', {by: domain.time, where: {id: domain.projects}})
-  await report.setUsers(mUser)
-  await report.setProjects(mProject)
-  return Report(report)
+const create = async (domain, tasks) => {
+  const mUser = await userModel.findById(domain.user)
+  const mTasks = []
+  for (const task of tasks) {
+    const mProject = await projectModel.findById(task.project)
+    const mTask = await taskModel.create(task)
+    await mTask.setProject(mProject)
+    mTasks.push(mTask)
+  }
+
+  let report = await model.create(domain)
+  // await mProject.increment('currentSpentTime', { by: domain.time, where: { id: domain.projects } }) // TODO
+  await report.setUser(mUser)
+  // await report.setProjects(mProject)
+  await report.addTasks(mTasks)
+  return findById(report.id)
 }
 
-const update = async (domain, id) => {
-  const mUser = await userModel.findById(domain.users)
-  const mProject = await projectModel.findById(domain.projects)
-  const report = await model.findById(id)
-  await mProject.decrement('currentSpentTime', {by: report.time, where: {id: domain.projects}})
-  await mProject.increment('currentSpentTime', {by: domain.time, where: {id: domain.projects}})
-  await report.update(domain, { where: { id } })
-  await report.setUsers(mUser)
-  await report.setProjects(mProject)
-  return Report(report)
-}
-
-const getAll = (attrs, user, filter) =>
-  roleModel.findById(user.roleId).then(mRole => {
-    const filterOptions = {
-      attributes: attrs,
-      include: [ {
-          model: database.models.users,
-          as: 'users'
-        },
-        {
-          model: database.models.projects,
-          as: 'projects'
-        }]
+const update = async (id, domain, tasks) => {
+  // const mUser = await userModel.findById(domain.users)
+  // const mTasks = await taskModel.findAll({ where: { id: tasks} })
+  var taskIds = []
+  for (var task of tasks) {
+    if (task.id) {
+      taskIds.push(task.id);
     }
+  }
+  const Op = Sequelize.Op
+  await taskModel.destroy({ where: { id: { [Op.notIn]: taskIds }, reportId: id } });
+  const mTasks = await taskModel.findAll({ where: { id: { [Op.in]: taskIds} } })
+  for (const task of tasks) {
+    if (!task.id) {
+      const mProject = await projectModel.findById(task.project)
+      const mTask = await taskModel.create(task)
+      await mTask.setProject(mProject)
+      mTasks.push(mTask)
+    }
+  }
+  var report = await model.findById(id)
+  // await mProject.decrement('currentSpentTime', { by: report.time, where: { id: domain.projects } })
+  // await mProject.increment('currentSpentTime', { by: domain.time, where: { id: domain.projects } })
+  await report.update(domain, { where: { id } })
+  // await report.setUser(mUser)
+  await report.setTasks(mTasks)
+  return findById(id)
+}
 
-    Object.assign(filterOptions, toSequelizeFilter(filter, user, mRole))
-    return filterOptions
-  }).then(options =>
-      model.findAll(options)
-  ).then(reports =>
+const getAll = (user, filter) => {
+  const filterOptions = {
+    // attributes: attrs,
+    include: [{
+      model: database.models.users,
+      as: 'user'
+    },
+    {
+      model: database.models.tasks,
+      as: 'tasks'
+    }]
+  }
+
+  Object.assign(filterOptions, toSequelizeFilter(filter, user))
+
+  return model.findAll(filterOptions).then(reports =>
     reports.map((data) => {
       const { dataValues } = data
       return GetReport(dataValues)
     })
   )
+}
 
 const findById = (id) =>
   model.findById(id, {
     include: [
-      { model: database.models.users,
-        as: 'users'
+      {
+        model: database.models.users,
+        as: 'user'
       },
-      { model: database.models.projects,
-        as: 'projects'
+      {
+        model: database.models.tasks,
+        as: 'tasks',
+        attributes: [
+          'id',
+          'time',
+          'description',
+          ['projectId', 'project'],
+          // ['reportId', 'report'],
+          'updatedAt',
+          'createdAt'
+        ]
       }
     ],
-})
-  .then((entity) => {
-  const { dataValues } = entity
-  return GetReport(dataValues)
-})
+  }).then((entity) => {
+    var dataValues = entity.toJSON()
+    console.debug(dataValues)
+    return GetReport(dataValues)
+  })
 
 const destroy = async (id) => {
   const report = await model.findById(id)
-  const mProject = await projectModel.findById(report.projectId)
-  await mProject.decrement('currentSpentTime', {by: report.time, where: {id: mProject.id}})
+  // const mProject = await projectModel.findById(report.projectId)
+  // await mProject.decrement('currentSpentTime', { by: report.time, where: { id: mProject.id } })
   await model.destroy({ where: { id } })
 }
 

@@ -1,42 +1,45 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Role = sequelize.define('roles', {
+  const Invoice = sequelize.define('invoices', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false
     },
-    roleName: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    workMode: {
-      type: DataTypes.STRING
-    },
-    basicSalary: {
+    time: {
       type: DataTypes.DOUBLE,
       defaultValue: 0
     },
-    extraHours: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    payExtraHours: {
+    extra: {
       type: DataTypes.DOUBLE,
       defaultValue: 0
     },
-    description: {
-      type: DataTypes.STRING
+    internet: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0
+    },
+    totalCUC: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0
+    },
+    month: {
+      type: DataTypes.INTEGER
+    },
+    year: {
+      type: DataTypes.INTEGER
     }
   },
   {
     underscored: false
   });
 
-  Role.associate = function (models) {
+  Invoice.associate = function (models) {
     // associations can be defined here
-    Role.hasMany(models.users);
+    Invoice.belongsTo(models.users, {
+      foreignKey: 'userId',
+      as: 'user'
+    });
   };
-  return Role;
+  return Invoice;
 };

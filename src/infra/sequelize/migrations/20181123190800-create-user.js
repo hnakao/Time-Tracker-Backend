@@ -29,6 +29,22 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
+      mobile: {
+        type: Sequelize.STRING
+      },
+      role: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: 'Developer'
+      },
+      salary: {
+        type: Sequelize.DOUBLE
+      },
+      internet: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -38,10 +54,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.fn('NOW')
-      },
-      roleId: {
-        type: Sequelize.UUID,
-        allowNull: true
       }
     })
   },

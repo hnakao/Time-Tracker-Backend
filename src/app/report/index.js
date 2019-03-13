@@ -1,18 +1,20 @@
 const repository = require('src/infra/repositories/report')
 const { Report } = require('src/domain/report')
-const { User } = require('src/domain/user')
 
-const attrs = ['id', 'time', 'description', 'date', 'createdAt', 'updatedAt', 'userId', 'projectId']
+
+const attrs = ['id', 'userId', 'date', 'createdAt', 'updatedAt']
 
 const {
   getOneUseCase,
-  createUseCase,
+  //createUseCase,
   //getAllUseCase,
   removeUseCase,
-  updateUseCase
+  //updateUseCase
 } = require('src/app/operations')(repository, Report, attrs)
 
-const { getAllUseCase } = require('./get')(repository, User, attrs)
+const getAllUseCase = require('./get')(repository)
+const createUseCase = require('./post')(repository)
+const updateUseCase = require('./put')(repository)
 
 
 module.exports = {

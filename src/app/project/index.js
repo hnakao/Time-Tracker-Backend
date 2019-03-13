@@ -10,16 +10,16 @@ const {
   //updateUseCase
 } = require('src/app/operations')(repository, Project, attrs)
 
-const createProjectUseCase = require('./post')
-const updateProjectUseCase = require('./put')
+const createUseCase = require('./post')
+const updateUseCase = require('./put')
 const getAllByUserIdUseCase = require('./get')(repository)
 
 module.exports = {
   getOneUseCase,
-  createProjectUseCase,
+  createUseCase,
   getAllUseCase,
   getAllByUserIdUseCase,
   removeUseCase,
-  updateProjectUseCase
+  updateUseCase
   //updateUseCase
 }

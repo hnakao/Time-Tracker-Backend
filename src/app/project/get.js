@@ -1,9 +1,9 @@
- module.exports = ( Repository ) => {
+module.exports = (Repository) => {
   const all = (userId) => {
     return Promise
       .resolve()
       .then(() =>
-      Repository.getAllByUserId(userId)
+        Repository.getAllByUserId(userId)
       )
       .catch(error => {
         throw new Error(error)

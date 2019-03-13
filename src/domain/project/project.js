@@ -6,7 +6,9 @@ const Project = t.struct({
   description: t.String,
   estimatedDuration: t.Number,
   currentSpentTime: t.Number,
-  users: t.maybe(t.list(t.String))
+  users: t.maybe(t.list(t.String)),
+  createdAt: t.maybe(t.Date),
+  updatedAt: t.maybe(t.Date)
 })
 
 module.exports = Project

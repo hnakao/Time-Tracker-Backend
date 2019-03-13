@@ -1,15 +1,19 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('reports', {
+    return queryInterface.createTable('tasks', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false
       },
-      date: {
-        type: Sequelize.DATE
+      time: {
+        type: Sequelize.DOUBLE,
+        defaultValue: 0
+      },
+      description: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -19,10 +23,19 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      userId: {
+      reportId: {
         type: Sequelize.UUID,
         references: {
-          model: 'users',
+          model: 'reports',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
+      projectId: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'projects',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -31,6 +44,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('reports');
+    return queryInterface.dropTable('tasks');
   }
 };

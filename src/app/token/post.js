@@ -4,7 +4,6 @@
 const Token = require('src/domain/token')
 const container = require('src/container')
 const { database } = container.cradle
-const roleModel = database.models.roles
 
  /**
   * function for getter user.
@@ -15,9 +14,9 @@ module.exports = ({ userRepository, webToken }) => {
     return new Promise(async (resolve, reject) => {
       try {
         const credentials = Token(body)
-        const userCredentials = await userRepository.findOne({
+        const user = await userRepository.findOne({
           attributes: [
-            'id', 'firstName', 'lastName', 'email', 'password', 'roleId', 'isDeleted'
+            'id', 'firstName', 'lastName', 'email', 'password', 'role', 'isDeleted', 'mobile', 'salary', 'internet'
           ],
           where: {
             email: credentials.email,
@@ -25,9 +24,7 @@ module.exports = ({ userRepository, webToken }) => {
           }
         })
 
-        const role = await roleModel.findById(userCredentials.roleId)
-
-        const validatePass = userRepository.validatePassword(userCredentials.password)
+        const validatePass = userRepository.validatePassword(user.password)
 
         if (!validatePass(credentials.password)) {
           throw new Error('Invalid Credentials')
@@ -36,11 +33,11 @@ module.exports = ({ userRepository, webToken }) => {
 
         resolve({
           token: signIn({
-            id: userCredentials.id,
-            firstName: userCredentials.firstName,
-            lastName: userCredentials.lastName,
-            email: userCredentials.email,
-            roleName: role.roleName
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            roleName: user.role
           })
         })
       } catch (error) {

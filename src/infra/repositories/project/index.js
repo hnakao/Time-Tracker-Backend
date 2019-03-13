@@ -9,15 +9,15 @@ const {
   destroy
 } = BaseRepository(model, Project)
 
-const createProject = async (users, projectDomain) => {
-  const mUsers = await userModel.findAll({ where: { id: users} })
+const create = async (projectDomain, users) => {
+  const mUsers = await userModel.findAll({ where: { id: users } })
   const project = await model.create(projectDomain)
   await project.addUsers(mUsers)
   return Project(project)
 }
 
-const updateProject = async (id, projectDomain, users) => {
-  const mUsers = await userModel.findAll({ where: { id: users} })
+const update = async (id, projectDomain, users) => {
+  const mUsers = await userModel.findAll({ where: { id: users } })
   const project = await model.findById(id)
   await project.update(projectDomain, { where: { id } })
   await project.setUsers(mUsers)
@@ -43,7 +43,7 @@ const getAll = () =>
     })
   })
 
-  const getAllByUserId = (userId) =>
+const getAllByUserId = (userId) =>
   userModel.findById(userId).then(user =>
     user.getProjects({
       include: [
@@ -60,18 +60,18 @@ const getAll = () =>
     })
   )
 
-  const findById = (id) =>
-    model.findById(id, {
-      include: [{ model: database.models.users, as: 'users' }],
+const findById = (id) =>
+  model.findById(id, {
+    include: [{ model: database.models.users, as: 'users' }],
   })
     .then((entity) => {
-    const { dataValues } = entity
-    return GetProject(dataValues)
-  })
+      const { dataValues } = entity
+      return GetProject(dataValues)
+    })
 
 module.exports = {
-  createProject,
-  updateProject,
+  create,
+  update,
   //update,
   findById,
   destroy,

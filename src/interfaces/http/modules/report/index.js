@@ -52,7 +52,7 @@ module.exports = () => {
   router
     .get('/', (req, res) => {
       getAllUseCase
-        .all({ user: req.user }, mapQuery(req.query))
+        .getAll({ user: req.user }, mapQuery(req.query))
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })
@@ -124,7 +124,7 @@ module.exports = () => {
   router
     .post('/', (req, res) => {
       createUseCase
-        .create({ body: req.body })
+        .create({ body: req.body, tasks: req.body.tasks })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })
@@ -171,7 +171,7 @@ module.exports = () => {
   router
     .put('/:id', (req, res) => {
       updateUseCase
-        .update({ id: req.params.id, body: req.body })
+        .update({ id: req.params.id, body: req.body, tasks: req.body.tasks })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })

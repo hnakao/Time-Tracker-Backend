@@ -1,6 +1,5 @@
 const t = require('tcomb')
-const UserEntity = require('../entities/user_entity')
-const Entity = require('../entity')
+const User = require('../user/user')
 
 const GetProject = t.struct({
   id: t.maybe(t.String),
@@ -8,8 +7,9 @@ const GetProject = t.struct({
   description: t.String,
   estimatedDuration: t.Number,
   currentSpentTime: t.Number,
-  users: t.maybe(t.list(Entity.extend(UserEntity)))
+  users: t.maybe(t.list(User)),
+  createdAt: t.maybe(t.Date),
+  updatedAt: t.maybe(t.Date)
 })
 
 module.exports = GetProject
-
