@@ -38,8 +38,9 @@ const update = async (id, domain, tasks) => {
   }
   const Op = Sequelize.Op
   await taskModel.destroy({ where: { id: { [Op.notIn]: taskIds }, reportId: id } });
-  const mTasks = await taskModel.findAll({ where: { id: { [Op.in]: taskIds} } })
+  const mTasks = await taskModel.findAll({ where: { id: { [Op.in]: taskIds } } })
   for (const task of tasks) {
+    console.debug(task);
     if (!task.id) {
       const mProject = await projectModel.findById(task.project)
       const mTask = await taskModel.create(task)
@@ -65,7 +66,13 @@ const getAll = (user, filter) => {
     },
     {
       model: database.models.tasks,
-      as: 'tasks'
+      as: 'tasks',
+      include: [
+        {
+          model: database.models.projects,
+          as: 'project'
+        }
+      ]
     }]
   }
 
@@ -89,20 +96,16 @@ const findById = (id) =>
       {
         model: database.models.tasks,
         as: 'tasks',
-        attributes: [
-          'id',
-          'time',
-          'description',
-          ['projectId', 'project'],
-          // ['reportId', 'report'],
-          'updatedAt',
-          'createdAt'
+        include: [
+          {
+            model: database.models.projects,
+            as: 'project'
+          }
         ]
       }
     ],
   }).then((entity) => {
     var dataValues = entity.toJSON()
-    console.debug(dataValues)
     return GetReport(dataValues)
   })
 

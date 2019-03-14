@@ -30,10 +30,6 @@ const getAll = () =>
       {
         model: database.models.users,
         as: 'users'
-      },
-      {
-        model: database.models.reports,
-        as: 'reports'
       }
     ]
   }).then(result => {
