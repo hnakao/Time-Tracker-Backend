@@ -11,7 +11,7 @@ const User = t.struct({
   mobile: t.String,
   role: t.String,
   salary: t.Number,
-  internet: t.Boolean,
+  internet: t.maybe(t.Boolean),
   isDeleted: t.maybe(t.Number),
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)

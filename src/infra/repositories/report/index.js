@@ -86,6 +86,32 @@ const getAll = (user, filter) => {
   )
 }
 
+const getTotalHours = (user, filter) => {
+  const filterOptions = {
+    // attributes: attrs,
+    include: [{
+      model: database.models.users,
+      as: 'user'
+    },
+    {
+      model: database.models.tasks,
+      as: 'tasks'
+    }]
+  }
+
+  Object.assign(filterOptions, toSequelizeFilter(filter, user))
+
+  return model.findAll(filterOptions).then(reports =>{
+    var totalHours = 0
+    reports.forEach((report) => {
+      report.tasks.forEach((task) => {
+        totalHours += task.time
+      })
+    })
+    return totalHours
+  })
+}
+
 const findById = (id) =>
   model.findById(id, {
     include: [
@@ -120,6 +146,7 @@ module.exports = {
   create,
   update,
   getAll,
+  getTotalHours,
   findById,
   destroy
 }

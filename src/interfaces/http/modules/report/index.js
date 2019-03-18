@@ -5,6 +5,7 @@ const container = require('src/container') // we have to get the DI
 const {
   createUseCase,
   getAllUseCase,
+  getTotalHoursUseCase,
   updateUseCase,
   removeUseCase,
   getOneUseCase
@@ -62,6 +63,39 @@ module.exports = () => {
             Fail(error.message))
         })
     })
+
+/**
+  * @swagger
+  * /Reports:
+  *   get:
+  *     tags:
+  *       - Reports
+  *     description: Returns total hours logged by user on date range
+  *     security:
+  *       - JWT: []
+  *     responses:
+  *       200:
+  *         description: An number
+  *         schema:
+  *           type: array
+  *           items:
+  *             $ref: '#/definitions/report'
+  *       401:
+  *        $ref: '#/responses/Unauthorized'
+  */
+ router
+ .get('/totalHours', (req, res) => {
+   getTotalHoursUseCase
+     .getTotalHours({ user: req.user }, mapQuery(req.query))
+     .then(data => {
+       res.status(Status.OK).json(Success(data))
+     })
+     .catch((error) => {
+       logger.error(error) // we still need to log every error for debugging
+       res.status(Status.BAD_REQUEST).json(
+         Fail(error.message))
+     })
+ })
 /**
    * @swagger
    * /reports/id:
