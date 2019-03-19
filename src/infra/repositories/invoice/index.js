@@ -4,6 +4,7 @@ const container = require('src/container')
 const { database } = container.cradle
 const model = database.models.invoices
 const userModel = database.models.users
+const archiveModel = database.models.archives
 
 const {
   destroy
@@ -52,8 +53,19 @@ const findById = (id) =>
     return GetInvoice(dataValues)
   })
 
-const getInvoiceByUserIdAndDate = (userId, month, year) =>
-  model.findOne({
+const getInvoiceByUserIdAndDate = async (userId, month, year) => {
+  if (!month || !year) {
+    const archive = await archiveModel.findOne({
+      where: {
+      },
+      order: [['createdAt', 'DESC']],
+    })
+
+    var date = new Date(archive.year, archive.month + 1, 1);
+    month = date.getMonth()
+    year = date.getFullYear()
+  }
+  return model.findOne({
     include: [
       {
         model: database.models.users,
@@ -66,19 +78,22 @@ const getInvoiceByUserIdAndDate = (userId, month, year) =>
       '$user.id$': userId
     }
   }).then(invoice => {
-    console.log(JSON.stringify(invoice))
     const { dataValues } = invoice
     return GetInvoice(dataValues)
   })
+}
 
-const getInvoicesByDate = (month, year) => {
-  var where = {};
-  if (month) {
-    where.month = month
-  }
+const getInvoicesByDate = async (month, year) => {
+  if (!month || !year) {
+    const archive = await archiveModel.findOne({
+      where: {
+      },
+      order: [['createdAt', 'DESC']],
+    })
 
-  if (year) {
-    where.year = year
+    var date = new Date(archive.year, archive.month + 1, 1);
+    month = date.getMonth()
+    year = date.getFullYear()
   }
   return model.findAll({
     include: [
@@ -87,7 +102,10 @@ const getInvoicesByDate = (month, year) => {
         as: 'user'
       }
     ],
-    where: where
+    where: {
+      month: month,
+      year: year
+    }
   }).then(invoices => {
 
     return invoices.map((invoice) => {
