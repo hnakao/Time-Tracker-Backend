@@ -4,7 +4,8 @@ const container = require('src/container')
 
 const {
   createUseCase,
-  getAllByUserUseCase
+  getAllByUserUseCase,
+  getCurrentMonthUseCase
 } = require('src/app/archive')
 
 module.exports = () => {
@@ -26,42 +27,43 @@ module.exports = () => {
    */
   router.use(auth.authenticate())
 
-   /**
- * @swagger
- * /archives:
- *   post:
- *     tags:
- *       - Archives
- *     description: Create all archives by pending invoices
- *     security:
- *       - JWT: []
- *     produces:
- *       - application/json
- *     parameters:
- *         schema:
- *           $ref: '#/definitions/archive'
- *     responses:
- *       200:
- *         description: Successfully Created
- *         schema:
- *           $ref: '#/definitions/archive'
- *       401:
- *         $ref: '#/responses/Unauthorized'
- *       400:
- *         $ref: '#/responses/BadRequest'
- */
+  /**
+* @swagger
+* /archives:
+*   post:
+*     tags:
+*       - Archives
+*     description: Create all archives by pending invoices
+*     security:
+*       - JWT: []
+*     produces:
+*       - application/json
+*     parameters:
+*         schema:
+*           $ref: '#/definitions/archive'
+*     responses:
+*       200:
+*         description: Successfully Created
+*         schema:
+*           $ref: '#/definitions/archive'
+*       401:
+*         $ref: '#/responses/Unauthorized'
+*       400:
+*         $ref: '#/responses/BadRequest'
+*/
   router
-  .post('/', (req, res) => {
-    createUseCase
-      .create()
-      .then(data => {
-        res.status(Status.OK).json(Success(data))
-      })
-      .catch((error) => {
-        logger.error(error) // we still need to log every error for debugging
-        Fail(error.message)
-      })
-  })
+    .post('/', (req, res) => {
+      createUseCase
+        .create()
+        .then(data => {
+          res.status(Status.OK).json(Success(data))
+        })
+        .catch((error) => {
+          logger.error(error) // we still need to log every error for debugging
+          res.status(Status.BAD_REQUEST).json(
+            Fail(error.message))
+        })
+    })
 
   /**
    * @swagger
@@ -82,17 +84,48 @@ module.exports = () => {
 
    */
   router
-  .get('/', (req, res) => {
-    getAllByUserUseCase
-      .getAllByUser(req.query.userId)
-      .then(data => {
-        res.status(Status.OK).json(Success(data))
-      })
-      .catch((error) => {
-        logger.error(error) // we still need to log every error for debugging
-        Fail(error.message)
-      })
-  })
+    .get('/', (req, res) => {
+      getAllByUserUseCase
+        .getAllByUser(req.query.userId)
+        .then(data => {
+          res.status(Status.OK).json(Success(data))
+        })
+        .catch((error) => {
+          logger.error(error) // we still need to log every error for debugging
+          res.status(Status.BAD_REQUEST).json(
+            Fail(error.message))
+        })
+    })
+
+  /**
+   * @swagger
+   * /archives/current:
+   *   get:
+   *     description: Return current month and year
+   *     security:
+   *       - JWT: []
+   *     responses:
+   *       200:
+   *         description: month and year combination currently active
+   *         schema:
+   *           $ref: '#/definitions/archive'
+   *       401:
+   *        $ref: '#/responses/Unauthorized'
+
+   */
+  router
+    .get('/current', (req, res) => {
+      getCurrentMonthUseCase
+        .getCurrentMonth()
+        .then(data => {
+          res.status(Status.OK).json(Success(data))
+        })
+        .catch((error) => {
+          logger.error(error) // we still need to log every error for debugging
+          res.status(Status.BAD_REQUEST).json(
+            Fail(error.message))
+        })
+    })
 
   return router;
 };

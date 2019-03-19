@@ -44,7 +44,7 @@ module.exports = () => {
   router
   .get('/', (req, res) => {
     getMissionsUseCase
-      .getAll(req.query.startDate, req.query.endDate)
+      .getCurrentMonth()
       .then(data => {
         res.status(Status.OK).json(Success(data))
       })

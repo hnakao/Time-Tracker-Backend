@@ -177,67 +177,69 @@ module.exports = () => {
         })
     })
 
-    /**
-   * @swagger
-   * /invoices/userDate:
-   *   get:
-   *     tags:
-   *       - invoices by user Id
-   *     description: Returns  the invoices that belong to a user for month and year
-   *     security:
-   *       - JWT: []
-   *     responses:
-   *       200:
-   *         description: invoices in json format
-   *         schema:
-   *           $ref: '#/definitions/invoice'
-   *       401:
-   *        $ref: '#/responses/Unauthorized'
+  /**
+ * @swagger
+ * /invoices/userDate:
+ *   get:
+ *     tags:
+ *       - invoices by user Id
+ *     description: Returns  the invoices that belong to a user for month and year
+ *     security:
+ *       - JWT: []
+ *     responses:
+ *       200:
+ *         description: invoices in json format
+ *         schema:
+ *           $ref: '#/definitions/invoice'
+ *       401:
+ *        $ref: '#/responses/Unauthorized'
 
-   */
+ */
   router
-  .get('/userDate', (req, res) => {
-    getOneByUserAndDateUseCase
-      .getOne(req.query.userId, parseInt(req.query.month), parseInt(req.query.year))
-      .then(data => {
-        res.status(Status.OK).json(Success(data))
-      })
-      .catch((error) => {
-        logger.error(error) // we still need to log every error for debugging
-        Fail(error.message)
-      })
-  })
+    .get('/userDate', (req, res) => {
+      getOneByUserAndDateUseCase
+        .getOne(req.query.userId, parseInt(req.query.month), parseInt(req.query.year))
+        .then(data => {
+          res.status(Status.OK).json(Success(data))
+        })
+        .catch((error) => {
+          logger.error(error) // we still need to log every error for debugging
+          res.status(Status.BAD_REQUEST).json(
+            Fail(error.message))
+        })
+    })
 
-   /**
-   * @swagger
-   * /invoices/date:
-   *   get:
-   *     tags:
-   *       - invoices by user Id
-   *     description: Returns  the invoices that belong to a user for month and year
-   *     security:
-   *       - JWT: []
-   *     responses:
-   *       200:
-   *         description: invoices in json format
-   *         schema:
-   *           $ref: '#/definitions/invoice'
-   *       401:
-   *        $ref: '#/responses/Unauthorized'
+  /**
+  * @swagger
+  * /invoices/date:
+  *   get:
+  *     tags:
+  *       - invoices by user Id
+  *     description: Returns  the invoices that belong to a user for month and year
+  *     security:
+  *       - JWT: []
+  *     responses:
+  *       200:
+  *         description: invoices in json format
+  *         schema:
+  *           $ref: '#/definitions/invoice'
+  *       401:
+  *        $ref: '#/responses/Unauthorized'
 
-   */
+  */
   router
-  .get('/date', (req, res) => {
-    getAllByDateUseCase
-      .getAll(parseInt(req.query.month), parseInt(req.query.year))
-      .then(data => {
-        res.status(Status.OK).json(Success(data))
-      })
-      .catch((error) => {
-        logger.error(error) // we still need to log every error for debugging
-        Fail(error.message)
-      })
-  })
+    .get('/date', (req, res) => {
+      getAllByDateUseCase
+        .getAll(parseInt(req.query.month), parseInt(req.query.year))
+        .then(data => {
+          res.status(Status.OK).json(Success(data))
+        })
+        .catch((error) => {
+          logger.error(error) // we still need to log every error for debugging
+          res.status(Status.BAD_REQUEST).json(
+            Fail(error.message))
+        })
+    })
 
   /**
    * @swagger
@@ -266,7 +268,8 @@ module.exports = () => {
         })
         .catch((error) => {
           logger.error(error) // we still need to log every error for debugging
-          Fail(error.message)
+          res.status(Status.BAD_REQUEST).json(
+            Fail(error.message))
         })
     })
 

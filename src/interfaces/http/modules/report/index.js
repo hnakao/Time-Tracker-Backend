@@ -53,7 +53,7 @@ module.exports = () => {
   router
     .get('/', (req, res) => {
       getAllUseCase
-        .getAll({ user: req.user }, mapQuery(req.query))
+        .getAll({ user: req.user }, mapQuery(req.query).filter)
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })
@@ -77,16 +77,14 @@ module.exports = () => {
   *       200:
   *         description: An number
   *         schema:
-  *           type: array
-  *           items:
-  *             $ref: '#/definitions/report'
+  *           type: number
   *       401:
   *        $ref: '#/responses/Unauthorized'
   */
  router
  .get('/totalHours', (req, res) => {
    getTotalHoursUseCase
-     .getTotalHours({ user: req.user }, mapQuery(req.query))
+     .getTotalHours(req.query.userId)
      .then(data => {
        res.status(Status.OK).json(Success(data))
      })

@@ -13,6 +13,7 @@ const {
 
 const getAllByUserUseCase = require('./getAllByUser')(repository)
 const createUseCase = require('./post')(repository)
+const getCurrentMonthUseCase = require('./getCurrentMonth')(repository)
 
 module.exports = {
   getOneUseCase,
@@ -20,5 +21,6 @@ module.exports = {
   removeUseCase,
   createUseCase,
   updateUseCase,
-  getAllByUserUseCase
+  getAllByUserUseCase,
+  getCurrentMonthUseCase
 }

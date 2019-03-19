@@ -104,8 +104,24 @@ const getAllByUser = (userId) => {
   })
 }
 
+const getCurrentMonth = () => 
+  model.findOne({
+    where: {
+    },
+    order: [['createdAt', 'DESC']],
+  }).then(archive => {
+    var date = new Date(archive.year, archive.month + 1, 1);
+    month = date.getMonth()
+    year = date.getFullYear()
+    return {
+      month: month,
+      year: year
+    }
+  })
+
 
 module.exports = {
   create,
-  getAllByUser
+  getAllByUser,
+  getCurrentMonth
 }

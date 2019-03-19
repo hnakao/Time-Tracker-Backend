@@ -6,6 +6,7 @@ const model = database.models.reports
 const userModel = database.models.users
 const projectModel = database.models.projects
 const taskModel = database.models.tasks
+const archiveModel = database.models.archives
 const { toSequelizeFilter } = require('src/infra/support/sequelize_filter_attrs')
 const Sequelize = require('sequelize')
 
@@ -57,9 +58,47 @@ const update = async (id, domain, tasks) => {
   return findById(id)
 }
 
-const getAll = (user, filter) => {
-  const filterOptions = {
-    // attributes: attrs,
+const getAll = async (user, filter) => {
+  var projectId = filter.projectId;
+  var userId = filter.userId;
+  var startDate;
+  var endDate;
+
+  if (!filter.startDate || !filter.endDate) {
+    var archive = await archiveModel.findOne({
+      where: {},
+      order: [['createdAt', 'DESC']]
+    })
+    startDate = new Date(archive.year, archive.month, 1);
+    endDate = new Date(archive.year, archive.month + 1, 1);
+  } else {
+    startDate = new Date(filter.startDate);
+    endDate = new Date(filter.endDate);
+  }
+
+  var where = {}
+  var whereProject = {}
+  if (projectId) {
+    whereProject = {
+      id: projectId
+    }
+  }
+  if (user.role === 'Admin') {
+    if (userId) {
+      where = {
+        '$user.id$': userId
+      }
+    }
+  } else {
+    where = {
+      '$user.id$': user.id
+    }
+  }
+  where.date = {
+    $between: [startDate, endDate]
+  }
+
+  return model.findAll({
     include: [{
       model: database.models.users,
       as: 'user'
@@ -70,15 +109,13 @@ const getAll = (user, filter) => {
       include: [
         {
           model: database.models.projects,
-          as: 'project'
+          as: 'project',
+          where: whereProject
         }
       ]
-    }]
-  }
-
-  Object.assign(filterOptions, toSequelizeFilter(filter, user))
-
-  return model.findAll(filterOptions).then(reports =>
+    }],
+    where: where
+  }).then(reports =>
     reports.map((data) => {
       const { dataValues } = data
       return GetReport(dataValues)
@@ -86,22 +123,35 @@ const getAll = (user, filter) => {
   )
 }
 
-const getTotalHours = (user, filter) => {
-  const filterOptions = {
-    // attributes: attrs,
+const getTotalHours = async (userId) => {
+
+  var archive = await archiveModel.findOne({
+    where: {},
+    order: [['createdAt', 'DESC']]
+  });
+  startDate = new Date(archive.year, archive.month, 1);
+  endDate = new Date(archive.year, archive.month + 1, 1);
+
+  return model.findAll({
     include: [{
       model: database.models.users,
       as: 'user'
     },
     {
       model: database.models.tasks,
-      as: 'tasks'
-    }]
-  }
-
-  Object.assign(filterOptions, toSequelizeFilter(filter, user))
-
-  return model.findAll(filterOptions).then(reports =>{
+      as: 'tasks',
+      include: [
+        {
+          model: database.models.projects,
+          as: 'project',
+        }
+      ]
+    }],
+    where: {
+      '$user.id$': userId,
+      date: { $between: [startDate, endDate] }
+    }
+  }).then(reports => {
     var totalHours = 0
     reports.forEach((report) => {
       report.tasks.forEach((task) => {

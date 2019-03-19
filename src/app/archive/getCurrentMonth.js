@@ -2,9 +2,9 @@ module.exports = (Repository) => {
     const getCurrentMonth = () => {
         return Promise
             .resolve()
-            .then(() => {
-                return Repository.getMissions()
-            })
+            .then(() =>
+                Repository.getCurrentMonth()
+            )
             .catch(error => {
                 throw new Error(error)
             })
