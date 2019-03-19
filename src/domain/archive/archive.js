@@ -2,8 +2,8 @@ const t = require('tcomb')
 const User = require('../user/user')
 
 const GetArchive = t.struct({
-  user: User,
-  months: t.list(t.Number),
+  user: t.maybe(t.String),
+  month: t.Number,
   year: t.Number
 })
 

@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false
     },
+    salary: {
+      type: DataTypes.DOUBLE,
+      defaultValue: 0
+    },
     time: {
       type: DataTypes.DOUBLE,
       defaultValue: 0

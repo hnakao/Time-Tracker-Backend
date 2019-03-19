@@ -72,7 +72,7 @@ module.exports = () => {
 
   /**
  * @swagger
- * /invoices/:
+ * /invoices:
  *   post:
  *     tags:
  *       - Invoices

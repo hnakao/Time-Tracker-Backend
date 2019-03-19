@@ -1,9 +1,9 @@
 module.exports = (Repository) => {
-    const getAll = (userId) => {
+    const getAllByUser = (userId) => {
         return Promise
             .resolve()
             .then(() =>
-                Repository.getArchives(userId)
+                Repository.getAllByUser(userId)
             )
             .catch(error => {
                 throw new Error(error)
@@ -11,6 +11,6 @@ module.exports = (Repository) => {
     }
 
     return {
-        getAll
+        getAllByUser
     }
 }

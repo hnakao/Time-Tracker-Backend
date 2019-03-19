@@ -1,7 +1,7 @@
 const repository = require('src/infra/repositories/invoice')
 const { Invoice } = require('src/domain/invoice')
 
-const attrs = ['id', 'time', 'extra', 'internet', 'totalCUC', 'month', 'year', 'createdAt', 'updatedAt']
+const attrs = ['id', 'salary', 'time', 'extra', 'internet', 'totalCUC', 'month', 'year', 'createdAt', 'updatedAt']
 
 const {
   getOneUseCase,

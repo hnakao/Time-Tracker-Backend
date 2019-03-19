@@ -1,6 +1,4 @@
 const { Invoice, GetInvoice } = require('src/domain/invoice')
-const { GetArchive } = require('src/domain/archive')
-const { GetUser } = require('src/domain/user')
 const BaseRepository = require('../baseRepository')
 const container = require('src/container')
 const { database } = container.cradle

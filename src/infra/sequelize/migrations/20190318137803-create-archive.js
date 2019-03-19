@@ -1,32 +1,12 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('invoices', {
+    return queryInterface.createTable('archives', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false
-      },
-      salary: {
-        type: Sequelize.DOUBLE,
-        defaultValue: 0
-      },
-      time: {
-        type: Sequelize.DOUBLE,
-        defaultValue: 0
-      },
-      extra: {
-        type: Sequelize.DOUBLE,
-        defaultValue: 0
-      },
-      internet: {
-        type: Sequelize.DOUBLE,
-        defaultValue: 0
-      },
-      totalCUC: {
-        type: Sequelize.DOUBLE,
-        defaultValue: 0
       },
       month: {
         type: Sequelize.INTEGER
@@ -54,6 +34,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('invoices');
+    return queryInterface.dropTable('archives');
   }
 };

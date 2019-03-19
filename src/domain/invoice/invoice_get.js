@@ -4,6 +4,7 @@ const User = require('../user/user')
 const GetInvoice = t.struct({
   id: t.maybe(t.String),
   user: t.maybe(User),
+  salary: t.Number,
   time: t.Number,
   extra: t.Number,
   internet: t.Number,
