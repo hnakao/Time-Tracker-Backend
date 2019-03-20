@@ -18,6 +18,21 @@ module.exports = ({ userRepository }) => {
       })
   }
 
+  const developers = () => {
+    return Promise
+      .resolve()
+      .then(() =>
+      userRepository.getDevelopers({
+        attributes: [
+          'id', 'firstName', 'lastName', 'email', 'password', 'role', 'isDeleted', 'mobile', 'salary', 'internet'
+        ]
+      })
+      )
+      .catch(error => {
+        throw new Error(error)
+      })
+  }
+
   const byId = (id) => {
     return Promise
       .resolve()
@@ -31,6 +46,7 @@ module.exports = ({ userRepository }) => {
 
   return {
     all,
+    developers,
     byId
   }
 }

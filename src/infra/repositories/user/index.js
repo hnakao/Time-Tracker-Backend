@@ -13,6 +13,14 @@ module.exports = (model) => {
         return toEntity(dataValues)
       })
     )
+  
+  const getDevelopers = () =>
+    model.findAll({ where: { isDeleted: 0, role: 'Developer' } }).then((entity) =>
+      entity.map((data) => {
+        const { dataValues } = data
+        return toEntity(dataValues)
+      })
+    )
 
   const create = (...args) =>
     model.create(...args).then(({ dataValues }) => toEntity(dataValues))
@@ -45,6 +53,7 @@ module.exports = (model) => {
     findById,
     findOne,
     validatePassword,
-    destroy
+    destroy,
+    getDevelopers
   }
 }
