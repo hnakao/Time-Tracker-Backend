@@ -8,12 +8,6 @@ module.exports = {
         primaryKey: true,
         allowNull: false
       },
-      time: {
-        type: Sequelize.INTEGER
-      },
-      description: {
-        type: Sequelize.STRING
-      },
       date: {
         type: Sequelize.DATE
       },
@@ -29,15 +23,6 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: 'users',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
-      projectId: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'projects',
           key: 'id'
         },
         onUpdate: 'CASCADE',

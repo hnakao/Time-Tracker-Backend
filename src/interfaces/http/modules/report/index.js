@@ -5,6 +5,7 @@ const container = require('src/container') // we have to get the DI
 const {
   createUseCase,
   getAllUseCase,
+  getTotalHoursUseCase,
   updateUseCase,
   removeUseCase,
   getOneUseCase
@@ -52,7 +53,7 @@ module.exports = () => {
   router
     .get('/', (req, res) => {
       getAllUseCase
-        .all({ user: req.user }, mapQuery(req.query))
+        .getAll({ user: req.user }, mapQuery(req.query).filter)
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })
@@ -62,6 +63,37 @@ module.exports = () => {
             Fail(error.message))
         })
     })
+
+/**
+  * @swagger
+  * /Reports:
+  *   get:
+  *     tags:
+  *       - Reports
+  *     description: Returns total hours logged by user on date range
+  *     security:
+  *       - JWT: []
+  *     responses:
+  *       200:
+  *         description: An number
+  *         schema:
+  *           type: number
+  *       401:
+  *        $ref: '#/responses/Unauthorized'
+  */
+ router
+ .get('/totalHours', (req, res) => {
+   getTotalHoursUseCase
+     .getTotalHours(req.query.userId)
+     .then(data => {
+       res.status(Status.OK).json(Success(data))
+     })
+     .catch((error) => {
+       logger.error(error) // we still need to log every error for debugging
+       res.status(Status.BAD_REQUEST).json(
+         Fail(error.message))
+     })
+ })
 /**
    * @swagger
    * /reports/id:
@@ -124,7 +156,7 @@ module.exports = () => {
   router
     .post('/', (req, res) => {
       createUseCase
-        .create({ body: req.body })
+        .create({ body: req.body, tasks: req.body.tasks })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })
@@ -171,7 +203,7 @@ module.exports = () => {
   router
     .put('/:id', (req, res) => {
       updateUseCase
-        .update({ id: req.params.id, body: req.body })
+        .update({ id: req.params.id, body: req.body, tasks: req.body.tasks })
         .then(data => {
           res.status(Status.OK).json(Success(data))
         })

@@ -8,13 +8,13 @@ const User = t.struct({
   lastName: t.String,
   email: t.String,
   password: t.maybe(t.String),
-  roleId: t.maybe(t.String),
-  isDeleted: t.Number,
+  mobile: t.String,
+  role: t.String,
+  salary: t.Number,
+  internet: t.maybe(t.Boolean),
+  isDeleted: t.maybe(t.Number),
   createdAt: t.maybe(t.Date),
   updatedAt: t.maybe(t.Date)
 })
 
-module.exports = compose(
-  cleanData,
-  User
-)
+module.exports = User

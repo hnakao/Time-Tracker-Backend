@@ -22,7 +22,6 @@
     "seed": "cross-env NODE_ENV=development sequelize db:seed:all --seeders-path=./src/infra/sequelize/seeders/development",
     "seed:test": "cross-env NODE_ENV=development sequelize db:seed:all --env test --seeders-path=./src/infra/sequelize/seeders/development",
     "lint": "standard --verbose | snazzy",
-    "lint:staged": "lint-staged",
     "fresh-install": "rm -rf node_modules && npm cache clean --force && npm install",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release",
@@ -37,7 +36,7 @@
   "dependencies": {
     "awilix": "3.0.7",
     "awilix-express": "1.0.0",
-    "bcrypt": "2.0.1",
+    "bcrypt": "^3.0.4",
     "body-parser": "1.18.2",
     "compression": "1.7.2",
     "cors": "2.8.4",

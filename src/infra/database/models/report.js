@@ -7,12 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false
     },
-    time: {
-      type: DataTypes.DOUBLE
-    },
-    description: {
-      type: DataTypes.STRING
-    },
     date: {
       type: DataTypes.DATE
     }
@@ -23,14 +17,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Report.associate = function (models) {
     // associations can be defined here
+    Report.hasMany(models.tasks);
+
     Report.belongsTo(models.users, {
       foreignKey: 'userId',
-      as: 'users'
-    });
-
-    Report.belongsTo(models.projects, {
-      foreignKey: 'projectId',
-      as: 'projects'
+      as: 'user'
     });
   };
   return Report;

@@ -9,7 +9,22 @@ module.exports = ({ userRepository }) => {
       .then(() =>
       userRepository.getAll({
         attributes: [
-          'id', 'firstName', 'lastName', 'email', 'roleId', 'isDeleted'
+          'id', 'firstName', 'lastName', 'email', 'password', 'role', 'isDeleted', 'mobile', 'salary', 'internet'
+        ]
+      })
+      )
+      .catch(error => {
+        throw new Error(error)
+      })
+  }
+
+  const developers = () => {
+    return Promise
+      .resolve()
+      .then(() =>
+      userRepository.getDevelopers({
+        attributes: [
+          'id', 'firstName', 'lastName', 'email', 'password', 'role', 'isDeleted', 'mobile', 'salary', 'internet'
         ]
       })
       )
@@ -31,6 +46,7 @@ module.exports = ({ userRepository }) => {
 
   return {
     all,
+    developers,
     byId
   }
 }

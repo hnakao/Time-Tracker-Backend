@@ -33,7 +33,7 @@ module.exports = () => {
  *         type: string
  *       email:
  *         type: string
- *       roleId:
+ *       role:
  *         type: string
  *       isDeleted:
  *         type: number
@@ -73,6 +73,39 @@ module.exports = () => {
             Fail(error.message))
         })
     })
+
+/**
+ * @swagger
+ * /users/develop:
+ *   get:
+ *     tags:
+ *       - Users
+ *     description: Returns a list of users with role Developer
+ *     security:
+ *       - JWT: []
+ *     responses:
+ *       200:
+ *         description: An array of users
+ *         schema:
+ *           type: array
+ *           items:
+ *             $ref: '#/definitions/user'
+ *       401:
+ *        $ref: '#/responses/Unauthorized'
+ */
+router
+.get('/developer', (req, res) => {
+  getUseCase
+    .developers(req, res)
+    .then(data => {
+      res.status(Status.OK).json(Success(data))
+    })
+    .catch((error) => {
+      logger.error(error) // we still need to log every error for debugging
+      res.status(Status.BAD_REQUEST).json(
+        Fail(error.message))
+    })
+})
 
 /**
  * @swagger

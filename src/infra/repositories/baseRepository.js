@@ -10,10 +10,10 @@ module.exports = (model, toEntity) => {
 
   const create = (domain) =>
     model.create(domain).then(({ dataValues }) => {
-    return toEntity(dataValues)
-  })
+      return toEntity(dataValues)
+    })
 
-  const update = (domain, id) =>
+  const update = (id, domain) =>
     model.update(domain, { where: { id } })
 
   const destroy = (id) =>
@@ -21,9 +21,9 @@ module.exports = (model, toEntity) => {
 
   const findById = (id) => model.findById(id)
     .then((entity) => {
-    const { dataValues } = entity
-    return toEntity(dataValues)
-  })
+      const { dataValues } = entity
+      return toEntity(dataValues)
+    })
 
   return {
     getAll,

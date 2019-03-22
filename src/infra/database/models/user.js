@@ -25,13 +25,25 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
+    mobile: {
+      type: DataTypes.STRING
+    },
     isDeleted: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
-    roleId: {
-      type: DataTypes.UUID,
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: 'Developer',
       allowNull: false
+    },
+    salary: {
+      type: DataTypes.DOUBLE
+    },
+    internet: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   }, {
     hooks: {
@@ -47,13 +59,13 @@ module.exports = function (sequelize, DataTypes) {
     // associations can be defined here
     User.hasMany(models.reports);
 
+    User.hasMany(models.invoices);
+
     User.belongsToMany(models.projects, {
       through: 'userProject',
       foreignKey: 'userId',
       as: 'projects'
     });
-
-    User.belongsTo(models.roles, { foreignKey: 'roleId', as: 'userRole' });
   };
 
   return User;
