@@ -58,6 +58,7 @@
     "pm2": "2.10.3",
     "ramda": "0.25.0",
     "sequelize": "4.37.6",
+    "sequelize-cli": "^5.4.0",
     "sequelize-auto-migrations": "^1.0.2",
     "swagger-jsdoc": "1.9.7",
     "tcomb": "3.2.25",

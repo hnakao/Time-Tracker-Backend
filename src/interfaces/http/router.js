@@ -26,13 +26,14 @@ module.exports = ({ config, logger, database }) => {
   const apiRouter = Router()
 
   apiRouter
-    .use(cors({
-      origin: [
-        'http://localhost:4200'
-      ],
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-      allowedHeaders: ['Content-Type', 'Authorization']
-    }))
+    .use(cors())
+    // .use(cors({
+    //   origin: [
+    //     'http://localhost:4200'
+    //   ],
+    //   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    //   allowedHeaders: ['Content-Type', 'Authorization']
+    // }))
     .use(bodyParser.json())
     .use(compression())
 
