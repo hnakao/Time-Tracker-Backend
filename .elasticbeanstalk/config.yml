@@ -1,0 +1,18 @@
+branch-defaults:
+  master:
+    environment: timetracker-api-prod
+    group_suffix: null
+  production:
+    environment: timetracker-api-prod
+global:
+  application_name: timetracker-api
+  branch: null
+  default_platform: Node.js
+  default_region: eu-west-3
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: timetracker-deploy
+  repository: null
+  sc: git
+  workspace_type: Application
