@@ -10,6 +10,7 @@
   "scripts": {
     "gc": "git-cz",
     "start": "node cluster.js",
+    "start-dev": "NODE_PATH=. NODE_ENV=development node index.js",
     "start-prod": "NODE_PATH=. NODE_ENV=production node index.js",
     "test": "standard --verbose | snazzy && npm run migrate:test && npm run test:cov",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",

@@ -4,6 +4,7 @@ const container = require('src/container')
 const { database } = container.cradle
 const model = database.models.projects
 const userModel = database.models.users
+const projectMapping = require('./projectMapping')
 
 const {
   destroy
@@ -30,12 +31,15 @@ const getAll = () =>
       {
         model: database.models.users,
         as: 'users'
+      },
+      {
+        model: database.models.tasks
       }
     ]
   }).then(result => {
     return result.map((data) => {
       const { dataValues } = data
-      return GetProject(dataValues)
+      return projectMapping.map(dataValues)
     })
   })
 
