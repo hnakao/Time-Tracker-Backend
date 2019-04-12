@@ -1,4 +1,4 @@
-const { Project, GetProject } = require('src/domain/project')
+const { Project } = require('src/domain/project')
 const BaseRepository = require('../baseRepository')
 const container = require('src/container')
 const { database } = container.cradle
@@ -50,29 +50,34 @@ const getAllByUserId = (userId) =>
         {
           model: database.models.users,
           as: 'users'
+        }, {
+          model: database.models.tasks
         }
       ]
     }).then(result => {
       return result.map((data) => {
         const { dataValues } = data
-        return GetProject(dataValues)
+        return projectMapping.map(dataValues)
       })
     })
   )
 
 const findById = (id) =>
   model.findById(id, {
-    include: [{ model: database.models.users, as: 'users' }],
+    include: [{
+      model: database.models.users, as: 'users'
+    }, {
+      model: database.models.tasks
+    }]
+  }).then((entity) => {
+    const { dataValues } = entity
+    return projectMapping.map(dataValues)
   })
-    .then((entity) => {
-      const { dataValues } = entity
-      return GetProject(dataValues)
-    })
 
 module.exports = {
   create,
   update,
-  //update,
+  // update,
   findById,
   destroy,
   getAll,

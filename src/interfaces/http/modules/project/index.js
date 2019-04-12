@@ -33,7 +33,7 @@ module.exports = () => {
    *          type: time
    */
 
-  //  router.use(auth.authenticate())
+  router.use(auth.authenticate())
 
   /**
    * @swagger
